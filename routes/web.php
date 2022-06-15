@@ -36,6 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/permohonan-registrasi/tolak/{id}', 'RegistrasiPemohonController@tolak')->name('permohonan-registrasi-tolak');
     Route::post('/permohonan-registrasi/terima/{id}', 'RegistrasiPemohonController@terima')->name('permohonan-registrasi-terima');
 
+
+    // --- PERMOHONAN
+    Route::get('/permohonan', 'PermohonanController@index')->name('permohonan');
+    Route::get('/permohonan/pertimbangan-teknis', 'PermohonanController@pertimbanganTeknis')->name('permohonan.pertimbangan-teknis');
+
+    // -- PENGERUKAN
+    Route::get('/permohonan/pertimbangan-teknis/pengerukan/{id}', 'PengerukanController@show')->name('permohonan.pertimbangan-teknis.pengerukan.show');
+    Route::post('/permohonan/pertimbangan-teknis/pengerukan', 'PengerukanController@store')->name('permohonan.pertimbangan-teknis.pengerukan.store');
+
     // --- MASTER DATA
     Route::prefix('master-data')->name('master-data.')->group(function () {
         Route::get('/', 'DataMasterController@index')->name('index');

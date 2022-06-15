@@ -1,12 +1,12 @@
 @push('styles')
     <link href="{{asset('/assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css" />
 @endpush
-{{-- @if(session()->has('success'))
+@if(session()->has('success'))
 <div class="alert alert-success alert-dismissible">
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     {!! session()->get('success') !!}
 </div>
-@endif --}}
+@endif
 
 @if(session()->has('info'))
 <div class="alert alert-info alert-dismissible">

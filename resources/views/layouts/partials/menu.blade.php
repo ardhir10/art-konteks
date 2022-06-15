@@ -39,6 +39,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{route('permohonan')}}">
+                        <i class="icon nav-icon" data-feather="trello"></i>
+                        <span class="menu-item" data-key="t-sales">Permohonan</span>
+                    </a>
+                </li>
+
 
 
                 <li>
