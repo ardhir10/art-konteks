@@ -115,7 +115,7 @@
                                 <span class="fs-6 fw-bolder d-block">{{$data->jadwal_kegiatan_hingga}}</span>
                             </div>
                             <div class="col-4">
-                                <span class="text-danger fw-bolder fs-6" for="">120 Hari</span>
+                                <span class="text-danger fw-bolder fs-6" for="">{{$data->totalDayKegiatan()}} Hari</span>
                             </div>
                         </div>
                     </div>

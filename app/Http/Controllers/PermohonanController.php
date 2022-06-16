@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PermohonanPTPengerukan;
+use App\PermohonanPTReklamasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,19 +15,42 @@ class PermohonanController extends Controller
 
 
         if((Auth::user()->role->name ?? '') == 'Pemohon'){
-            $data['permohonan'] = PermohonanPTPengerukan::where('pemohon_id',Auth::user()->id)->get();
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+            ->where('pemohon_id',Auth::user()->id)
+            ->get();
+
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+            ->where('pemohon_id',Auth::user()->id)
+            ->get();
+
+            $result = collect($PTPengerukan)->merge($PTReklamasi);
+            $data['permohonan'] = $result;
             return view('permohonan.pemohon-index', $data);
         }else{
-            $data['permohonan'] = PermohonanPTPengerukan::get();
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+            ->get();
+
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+            ->get();
+
+            $result = collect($PTPengerukan)->merge($PTReklamasi);
+            $data['permohonan'] = $result;
+
             return view('permohonan.admin-index', $data);
         }
     }
 
     public function pertimbanganTeknis(Request $request){
-        if($request->type=='pengerukan'){
+        $type = $request->type;
+        if($type=='pengerukan'){
             $data['page_title'] = 'PERMOHONAN KEGIATAN PENGERUKAN';
             return view('permohonan.pertimbangan-teknis.pengerukan.form-permohonan', $data);
 
+        }elseif($type == 'reklamasi' ){
+            $data['page_title'] = 'PERMOHONAN KEGIATAN REKLAMASI';
+            return view('permohonan.pertimbangan-teknis.reklamasi.form-permohonan', $data);
+        }else{
+            dd('Not Available !');
         }
     }
 }

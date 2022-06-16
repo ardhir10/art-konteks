@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'reklamasi'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/02 Reklamasi@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -289,11 +289,17 @@
                     <tbody>
 
                         @foreach ($permohonan as $item)
-                            <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$item->no_permohonan}}
-                                <td>{{$item->created_at}}
-                                <td>{{$item->pemohon->nama_perusahaan ?? ''}}
+                            @if ($item->getTable() == 'permohonan_pt_pengerukan')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
+                            @else
+
+                            @endif
+                                <td>{{$loop->iteration}} </td>
+                                <td>{{$item->no_permohonan}}</td>
+                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->pemohon->nama_perusahaan ?? ''}}</td>
                                 <td>{{'Pengerukan'}}</td>
                                 <td>
                                     <div class="avatar-sm me-1">
@@ -302,7 +308,7 @@
                                     </div>
                                 </td>
 
-                            </tr>
+                        </tr>
 
                         @endforeach
 

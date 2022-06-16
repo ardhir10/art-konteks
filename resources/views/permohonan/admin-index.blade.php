@@ -80,7 +80,12 @@
                     </thead>
                     <tbody>
                         @foreach ($permohonan as $item)
-                            <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
+                            @if ($item->getTable() == 'permohonan_pt_pengerukan')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
+                            @else
+                            @endif
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->no_permohonan}}
                                 <td>{{$item->created_at}}
@@ -92,7 +97,6 @@
                                         </div>
                                     </div>
                                 </td>
-
                             </tr>
 
                         @endforeach
