@@ -49,7 +49,11 @@ class PermohonanController extends Controller
         }elseif($type == 'reklamasi' ){
             $data['page_title'] = 'PERMOHONAN KEGIATAN REKLAMASI';
             return view('permohonan.pertimbangan-teknis.reklamasi.form-permohonan', $data);
-        }else{
+        } elseif ($type == 'pembangunan-pengoprasian-tersus') {
+            $data['page_title'] = 'PERMOHONAN PEMBANGUNAN & PENGOPRASIAN TERSUS';
+            return view('permohonan.pertimbangan-teknis.terminal-khusus.form-permohonan', $data);
+        }
+        else{
             dd('Not Available !');
         }
     }

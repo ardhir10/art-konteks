@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'pembangunan-pengoprasian-tersus'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/03 Tersus@2x.png')}}" height="70px" alt="">
                                 </div>
