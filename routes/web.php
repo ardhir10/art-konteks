@@ -53,6 +53,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/permohonan/pertimbangan-teknis/terminal-khusus/{id}', 'PertekTerminalKhususController@show')->name('permohonan.pertimbangan-teknis.terminal-khusus.show');
     Route::post('/permohonan/pertimbangan-teknis/terminal-khusus', 'PertekTerminalKhususController@store')->name('permohonan.pertimbangan-teknis.terminal-khusus.store');
 
+    // --- TERMINAL TUKS
+    Route::get('/permohonan/pertimbangan-teknis/terminal-tuks/{id}', 'PertekTerminalTuksController@show')->name('permohonan.pertimbangan-teknis.terminal-tuks.show');
+    Route::post('/permohonan/pertimbangan-teknis/terminal-tuks', 'PertekTerminalTuksController@store')->name('permohonan.pertimbangan-teknis.terminal-tuks.store');
+
+    // --- TERMINAL UMUM
+    Route::get('/permohonan/pertimbangan-teknis/terminal-umum/{id}', 'PertekTerminalTumController@show')->name('permohonan.pertimbangan-teknis.terminal-umum.show');
+    Route::post('/permohonan/pertimbangan-teknis/terminal-umum', 'PertekTerminalTumController@store')->name('permohonan.pertimbangan-teknis.terminal-umum.store');
+
 
 
     // --- MASTER DATA

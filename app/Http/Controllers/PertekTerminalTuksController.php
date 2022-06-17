@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class PertekTerminalKhususController extends Controller
+class PertekTerminalTuksController extends Controller
 {
     public function show(Request $request, $id)
     {
-        $data['page_title'] = 'KEGIATAN TERMINAL KHUSUS';
+        $data['page_title'] = 'KEGIATAN TERMINAL TUKS';
         $data['data'] = PermohonanPTTerminal::findOrFail($id);
-        return view('permohonan.pertimbangan-teknis.terminal-khusus.show', $data);
+        return view('permohonan.pertimbangan-teknis.tuks.show', $data);
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class PertekTerminalKhususController extends Controller
         $dataPermohonan['peralatan_yang_digunakan'] = $request->peralatan_yang_digunakan;
         $dataPermohonan['keterangan_tambahan'] = $request->keterangan_tambahan;
         $dataPermohonan['surat_permohonan'] = null;
-        $dataPermohonan['type'] = 'TERSUS';
+        $dataPermohonan['type'] = 'TUKS';
 
         $dataPermohonan['pemohon_id'] = Auth::user()->id;
 
@@ -272,7 +272,7 @@ class PertekTerminalKhususController extends Controller
 
 
             DB::commit();
-            return redirect()->route('permohonan.pertimbangan-teknis.terminal-khusus.show', ['id' => $insert->id])->with(['success' => 'Data berhasil dibuat !']);
+            return redirect()->route('permohonan.pertimbangan-teknis.terminal-tuks.show', ['id' => $insert->id])->with(['success' => 'Data berhasil dibuat !']);
         } catch (\Throwable $th) {
             DB::rollback();
             return redirect()->route('permohonan')->with(['failed' => $th->getMessage()]);
@@ -282,7 +282,7 @@ class PertekTerminalKhususController extends Controller
 
     private function generateNoPermohonan()
     {
-        $type = 'Pertek/TerminalKhusus';
+        $type = 'Pertek/TerminalUntukKepentinganSendiri';
         $bulanRomawi = $this->getRomawi(date('m'));
         $year_now = date('Y');
 

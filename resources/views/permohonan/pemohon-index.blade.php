@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'pembangunan-pengoprasian-tuks'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/04 TUKS@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -99,7 +99,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'pembangunan-pengoprasian-tum'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/05 Terminal Umum@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -289,18 +289,19 @@
                     <tbody>
 
                         @foreach ($permohonan as $item)
-                            @if ($item->getTable() == 'permohonan_pt_pengerukan')
+                             @if ($item->getTable() == 'permohonan_pt_pengerukan')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_terminal')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-tuks.show',['id'=>$item->id])}}'>
                             @else
-
                             @endif
                                 <td>{{$loop->iteration}} </td>
                                 <td>{{$item->no_permohonan}}</td>
                                 <td>{{$item->created_at}}</td>
                                 <td>{{$item->pemohon->nama_perusahaan ?? ''}}</td>
-                                <td>{{'Pengerukan'}}</td>
+                                <td>{{'Pertimbangan Teknis'}}</td>
                                 <td>
                                     <div class="avatar-sm me-1">
                                         <div class="avatar-title bg-warning rounded-circle ">

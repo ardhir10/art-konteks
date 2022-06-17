@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class PertekTerminalKhususController extends Controller
+class PertekTerminalTumController extends Controller
 {
     public function show(Request $request, $id)
     {
-        $data['page_title'] = 'KEGIATAN TERMINAL KHUSUS';
+        $data['page_title'] = 'KEGIATAN TERMINAL UMUM';
         $data['data'] = PermohonanPTTerminal::findOrFail($id);
-        return view('permohonan.pertimbangan-teknis.terminal-khusus.show', $data);
+        return view('permohonan.pertimbangan-teknis.terminal-umum.show', $data);
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class PertekTerminalKhususController extends Controller
         $dataPermohonan['peralatan_yang_digunakan'] = $request->peralatan_yang_digunakan;
         $dataPermohonan['keterangan_tambahan'] = $request->keterangan_tambahan;
         $dataPermohonan['surat_permohonan'] = null;
-        $dataPermohonan['type'] = 'TERSUS';
+        $dataPermohonan['type'] = 'TERMINAL_UMUM';
 
         $dataPermohonan['pemohon_id'] = Auth::user()->id;
 
@@ -272,7 +272,7 @@ class PertekTerminalKhususController extends Controller
 
 
             DB::commit();
-            return redirect()->route('permohonan.pertimbangan-teknis.terminal-khusus.show', ['id' => $insert->id])->with(['success' => 'Data berhasil dibuat !']);
+            return redirect()->route('permohonan.pertimbangan-teknis.terminal-umum.show', ['id' => $insert->id])->with(['success' => 'Data berhasil dibuat !']);
         } catch (\Throwable $th) {
             DB::rollback();
             return redirect()->route('permohonan')->with(['failed' => $th->getMessage()]);
@@ -282,13 +282,13 @@ class PertekTerminalKhususController extends Controller
 
     private function generateNoPermohonan()
     {
-        $type = 'Pertek/TerminalKhusus';
+        $type = 'Pertek/TerminalUmum';
         $bulanRomawi = $this->getRomawi(date('m'));
         $year_now = date('Y');
 
         $obj = DB::table('permohonan_pt_terminal')
-        ->select('no_permohonan')
-        ->latest('id')
+            ->select('no_permohonan')
+            ->latest('id')
             ->where('no_permohonan', 'ilike', '%' . $type . '/' . $bulanRomawi . '/' . $year_now . '%')
             ->first();
         if ($obj) {

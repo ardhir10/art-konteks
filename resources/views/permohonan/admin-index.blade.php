@@ -84,13 +84,15 @@
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pengerukan.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_terminal')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-khusus.show',['id'=>$item->id])}}'>
                             @else
                             @endif
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->no_permohonan}}
                                 <td>{{$item->created_at}}
                                 <td>{{$item->pemohon->nama_perusahaan ?? ''}}
-                                <td>{{'Pengerukan'}}</td>
+                                <td>{{'Pertimbangan Teknis'}}</td>
                                 <td>
                                     <div class="avatar-sm me-1">
                                         <div class="avatar-title bg-warning rounded-circle ">
