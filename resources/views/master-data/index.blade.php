@@ -147,6 +147,23 @@
                     </div>
                 </a>
             </div>
+            <div class="col-lg-3">
+                <a href="{{route('master-data.jenis-zonasi-perairan.index')}}">
+                    <div class="card shadow-lg card__one animate__animated  animate__fadeInUp card-4">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <img class="" height="50" src="{{asset('images/icon/kemenhub.png')}}" alt="">
+                                <div class="ms-2 mt-1">
+                                    <span class="fw-bold fs-6  d-block ">Master Jenis Zonasi Perairan</span>
+                                    <span class="d-block text-grey">
+                                        Data jenis zonasi perairan
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
         </div> <!-- end row-->
 

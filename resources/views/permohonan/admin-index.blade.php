@@ -85,14 +85,33 @@
                             @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_terminal')
-                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-khusus.show',['id'=>$item->id])}}'>
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-tuks.show',['id'=>$item->id])}}'>
+
+                            @elseif ($item->getTable() == 'permohonan_pt_pba')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_pbp')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_pap')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_ppsbnp')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.pp-sbnp.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_zonasi_perairan')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.zonasi-perairan.show',['id'=>$item->id])}}'>
                             @else
                             @endif
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$item->no_permohonan}}
-                                <td>{{$item->created_at}}
-                                <td>{{$item->pemohon->nama_perusahaan ?? ''}}
-                                <td>{{'Pertimbangan Teknis'}}</td>
+                                <td>{{$loop->iteration}} </td>
+                                <td>{{$item->no_permohonan}}</td>
+                                <td>{{$item->created_at}}</td>
+                                <td>{{$item->pemohon->nama_perusahaan ?? ''}}</td>
+                                @if (
+                                    ($item->getTable() == 'permohonan_rt_zonasi_perairan') ||
+                                    ($item->getTable() == 'permohonan_rt_ppsbnp') ||
+                                    ($item->getTable() == 'permohonan_rt_pap')
+                                )
+                                    <td>{{'Rekomendasi Teknis'}}</td>
+                                @else
+                                    <td>{{'Pertimbangan Teknis'}}</td>
+                                @endif
                                 <td>
                                     <div class="avatar-sm me-1">
                                         <div class="avatar-title bg-warning rounded-circle ">

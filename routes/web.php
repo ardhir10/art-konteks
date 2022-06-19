@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     // --- PERMOHONAN
     Route::get('/permohonan', 'PermohonanController@index')->name('permohonan');
     Route::get('/permohonan/pertimbangan-teknis', 'PermohonanController@pertimbanganTeknis')->name('permohonan.pertimbangan-teknis');
+    Route::get('/permohonan/rekomendasi-teknis', 'PermohonanController@rekomendasiTeknis')->name('permohonan.rekomendasi-teknis');
 
     // -- PENGERUKAN
     Route::get('/permohonan/pertimbangan-teknis/pengerukan/{id}', 'PertekPengerukanController@show')->name('permohonan.pertimbangan-teknis.pengerukan.show');
@@ -70,6 +71,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan', 'PertekPembangunanBangunanPerairanController@store')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.store');
 
 
+    // --- PENYELENGGARA ALUR PELAYARAN
+    Route::get('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran/{id}', 'RekomPenyelenggaraAlurPelayaranController@show')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.show');
+    Route::post('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran', 'RekomPenyelenggaraAlurPelayaranController@store')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.store');
+
+    // --- PEMBANGUNAN/PEMASANGAN SBNP
+    Route::get('/permohonan/rekomendasi-teknis/pp-sbnp/{id}', 'RekomPpSbnpController@show')->name('permohonan.rekomendasi-teknis.pp-sbnp.show');
+    Route::post('/permohonan/rekomendasi-teknis/pp-sbnp', 'RekomPpSbnpController@store')->name('permohonan.rekomendasi-teknis.pp-sbnp.store');
+
+
+     // --- PEMBANGUNAN/PEMASANGAN SBNP
+    Route::get('/permohonan/rekomendasi-teknis/zonasi-perairan/{id}', 'RekomZonasiPerairanController@show')->name('permohonan.rekomendasi-teknis.zonasi-perairan.show');
+    Route::post('/permohonan/rekomendasi-teknis/zonasi-perairan', 'RekomZonasiPerairanController@store')->name('permohonan.rekomendasi-teknis.zonasi-perairan.store');
+
+
 
     // --- MASTER DATA
     Route::prefix('master-data')->name('master-data.')->group(function () {
@@ -91,6 +106,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/jenis-pengurus/{id}/edit', 'JenisPengurusController@edit')->name('jenis-pengurus.edit');
         Route::post('/jenis-pengurus/{id}/update', 'JenisPengurusController@update')->name('jenis-pengurus.update');
         Route::get('/jenis-pengurus/{id}/delete', 'JenisPengurusController@delete')->name('jenis-pengurus.delete');
+
+
+        // ---JENIS ZONASI PERAIRAN
+        Route::get('/jenis-zonasi-perairan', 'JenisZonasiPerairanController@index')->name('jenis-zonasi-perairan.index');
+        Route::get('/jenis-zonasi-perairan/add', 'jenisZonasiPerairanController@create')->name('jenis-zonasi-perairan.create');
+        Route::post('/jenis-zonasi-perairan', 'jenisZonasiPerairanController@store')->name('jenis-zonasi-perairan.store');
+        Route::get('/jenis-zonasi-perairan/{id}/edit', 'jenisZonasiPerairanController@edit')->name('jenis-zonasi-perairan.edit');
+        Route::post('/jenis-zonasi-perairan/{id}/update', 'jenisZonasiPerairanController@update')->name('jenis-zonasi-perairan.update');
+        Route::get('/jenis-zonasi-perairan/{id}/delete', 'jenisZonasiPerairanController@delete')->name('jenis-zonasi-perairan.delete');
 
         // ---KAPAL NEGARA
         Route::get('/kapal-negara', 'KapalNegaraController@index')->name('kapal-negara.index');

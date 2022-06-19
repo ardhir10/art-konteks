@@ -138,7 +138,7 @@
                     <h5 class="fw-bolder">Rekomendasi Teknis</h5>
                     <div class="row mb-4">
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.rekomendasi-teknis',['type'=>'penyelenggara-alur-pelayaran'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/alur pelayaran@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.rekomendasi-teknis',['type'=>'pp-sbnp'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/SBNP@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.rekomendasi-teknis',['type'=>'penetapan-zonasi'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/zonasi@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -300,13 +300,28 @@
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_pbp')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_pap')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_ppsbnp')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.pp-sbnp.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_rt_zonasi_perairan')
+                                <tr class='clickable-row' data-href='{{route('permohonan.rekomendasi-teknis.zonasi-perairan.show',['id'=>$item->id])}}'>
+
                             @else
                             @endif
                                 <td>{{$loop->iteration}} </td>
                                 <td>{{$item->no_permohonan}}</td>
                                 <td>{{$item->created_at}}</td>
                                 <td>{{$item->pemohon->nama_perusahaan ?? ''}}</td>
-                                <td>{{'Pertimbangan Teknis'}}</td>
+                                @if (
+                                    ($item->getTable() == 'permohonan_rt_zonasi_perairan') ||
+                                    ($item->getTable() == 'permohonan_rt_ppsbnp') ||
+                                    ($item->getTable() == 'permohonan_rt_pap')
+                                )
+                                    <td>{{'Rekomendasi Teknis'}}</td>
+                                @else
+                                    <td>{{'Pertimbangan Teknis'}}</td>
+                                @endif
                                 <td>
                                     <div class="avatar-sm me-1">
                                         <div class="avatar-title bg-warning rounded-circle ">

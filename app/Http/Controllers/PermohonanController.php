@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\JenisZonasiPerairan;
 use App\PermohonanPTPekerjaanBawahAir;
 use App\PermohonanPTPembangunanBangunanPerairan;
 use App\PermohonanPTPengerukan;
 use App\PermohonanPTReklamasi;
 use App\PermohonanPTTerminal;
+use App\PermohonanRTPenyelenggaraAlurPelayaran;
+use App\PermohonanRTPpSbnp;
+use App\PermohonanRTZonasiPerairan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,10 +23,12 @@ class PermohonanController extends Controller
 
         if((Auth::user()->role->name ?? '') == 'Pemohon'){
             $PTPengerukan = PermohonanPTPengerukan::select('*')
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
 
             $PTReklamasi = PermohonanPTReklamasi::select('*')
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
 
             $PTRTerminal = PermohonanPTTerminal::select('*')
                 ->where('pemohon_id', Auth::user()->id)
@@ -36,11 +42,26 @@ class PermohonanController extends Controller
             ->where('pemohon_id', Auth::user()->id)
             ->get();
 
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+            ->where('pemohon_id', Auth::user()->id)
+            ->get();
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+            ->where('pemohon_id', Auth::user()->id)
+            ->get();
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+            ->where('pemohon_id', Auth::user()->id)
+            ->get();
+
+
             $result = collect($PTPengerukan)
                 ->merge($PTReklamasi)
                 ->merge($PTRTerminal)
                 ->merge($PTRPba)
-                ->merge($PTRPbp);
+                ->merge($PTRPbp)
+                ->merge($RTPap)
+                ->merge($RTPpSbnp)
+                ->merge($RTPzp)
+                ;
             $data['permohonan'] = $result;
             return view('permohonan.pemohon-index', $data);
         }else{
@@ -51,22 +72,30 @@ class PermohonanController extends Controller
             ->get();
 
             $PTRTerminal = PermohonanPTTerminal::select('*')
-                ->where('pemohon_id', Auth::user()->id)
                 ->get();
 
             $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
-            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
             $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
-            ->where('pemohon_id', Auth::user()->id)
             ->get();
+
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+            ->get();
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+            ->get();
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+            ->get();
+
 
             $result = collect($PTPengerukan)
                 ->merge($PTReklamasi)
                 ->merge($PTRTerminal)
                 ->merge($PTRPba)
-                ->merge($PTRPbp);
+                ->merge($PTRPbp)
+                ->merge($RTPap)
+                ->merge($RTPpSbnp)
+                ->merge($RTPzp);
             $data['permohonan'] = $result;
 
             return view('permohonan.admin-index', $data);
@@ -99,6 +128,25 @@ class PermohonanController extends Controller
             return view('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.form-permohonan', $data);
         }
         else{
+            dd('Not Available !');
+        }
+    }
+
+    public function rekomendasiTeknis(Request $request)
+    {
+        $type = $request->type;
+        if ($type == 'penyelenggara-alur-pelayaran') {
+            $data['page_title'] = 'PERMOHONAN PENYELENGGARA ALUR PELAYARAN';
+            return view('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.form-permohonan', $data);
+        } elseif ($type == 'pp-sbnp') {
+            $data['page_title'] = 'PERMOHONAN PEMBANGUNAN/PEMASANGAN SBNP';
+            return view('permohonan.rekomendasi-teknis.pp-sbnp.form-permohonan', $data);
+        } elseif ($type == 'penetapan-zonasi') {
+            $data['page_title'] = 'PENETAPAN ZONASI PERAIRAN ';
+            $data['data_zonasi_perairan'] = JenisZonasiPerairan::get();
+
+            return view('permohonan.rekomendasi-teknis.penetapan-zonasi.form-permohonan', $data);
+        }  else{
             dd('Not Available !');
         }
     }

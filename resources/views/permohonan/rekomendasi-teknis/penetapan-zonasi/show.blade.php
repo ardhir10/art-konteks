@@ -62,7 +62,7 @@
     <div class="col-lg-10">
         <div class="card shadow-lg">
             <div class="card-header justify-content-between d-flex align-items-center">
-                <h4 class="card-title">{{$data->jenis_pekerjaan}}</h4>
+                <h4 class="card-title">PENETAPAN ZONASI AREA LABUH</h4>
             </div>
             @include('components.flash-message')
             <div class="card-body row">
@@ -86,7 +86,7 @@
                                         alt="">
                                 </div>
                                 <div>
-                                    <a href="{{asset('/dokumen-permohonan/permohonan-teknis/pba/sp/'.$data->surat_permohonan)}}"  target="_blank">
+                                    <a href="{{asset('/dokumen-permohonan/rekomendasi-teknis/zonasi-perairan/sp/'.$data->surat_permohonan)}}"  target="_blank">
                                         <button class="btn btn-sm btn-success">Download</button>
                                     </a>
                                 </div>
@@ -103,34 +103,19 @@
                         </div>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <span class="fs-5 fw-bolder d-block mb-2">Jadwal Kegiatan</span>
-                        <div class="row">
-                            <div class="col-4">
-                                <span class="text-danger" for="">Dari</span>
-                                <span class="fs-6 fw-bolder d-block">{{$data->jadwal_kegiatan_dari}}</span>
-                            </div>
-                            <div class="col-4">
-                                <span class="text-danger" for="">Hingga</span>
-                                <span class="fs-6 fw-bolder d-block">{{$data->jadwal_kegiatan_hingga}}</span>
-                            </div>
-                            <div class="col-4">
-                                <span class="text-danger fw-bolder fs-6" for="">{{$data->totalDayKegiatan()}} Hari</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    {{-- LOKASI PEKERJAAN  --}}
+
+                    {{-- LOKASI ZONASI PERAIRAN  --}}
                     <div class="form-group mb-3">
-                        <span class="fs-5 fw-bolder d-block mb-2">Lokasi Pekerjaan</span>
+                        <span class="fs-5 fw-bolder d-block mb-2">Lokasi Zonasi Perairan</span>
                         <div class="row">
                             <div class="col-4">
-                                <span class="text-danger" for="">Nama Lokasi Pekerjaan</span>
-                                <span class="fs-6 fw-bolder d-block">{{$data->lokasi_pekerjaan}}</span>
+                                <span class="text-danger" for="">Nama Lokasi Zonasi Perairan</span>
+                                <span class="fs-6 fw-bolder d-block">{{$data->lokasi_zonasi_perairan}}</span>
                             </div>
                             <div class="col-4">
                                 <span class="text-danger" for="">Titik Koordinat</span>
-                                    @foreach ($data->lokasiPekerjaan as $item)
+                                    @foreach ($data->lokasiZonasiPerairan as $item)
                                     <span class="fs-6 fw-bolder d-block">
                                         {{$item->long_degrees}}°
                                         {{$item->long_minutes}}'
@@ -153,8 +138,37 @@
 
 
 
+                    {{-- RENCANA PENEMPATAN SBNP  --}}
+                    <div class="form-group mb-3">
+                        <span class="fs-5 fw-bolder d-block mb-2">Rencana Penempatan SBNP</span>
+                        @foreach ($data->rencanaSbnp as $rsbnp)
+                            <div class="row">
+                                <div class="col-4">
+                                    <span class="text-danger" for="">SBNP</span>
+                                    <span class="fs-6 fw-bolder d-block">{{$rsbnp->jenis_sbnp}}</span>
+                                </div>
+                                <div class="col-4">
+                                    <span class="text-danger" for="">Titik Koordinat</span>
+                                        <span class="fs-6 fw-bolder d-block">
+                                            {{$rsbnp->long_degrees}}°
+                                            {{$rsbnp->long_minutes}}'
+                                            {{$rsbnp->long_second}}"
+                                            {{$rsbnp->long_direction}}
+                                            -
+                                            {{$rsbnp->lat_degrees}}°
+                                            {{$rsbnp->lat_minutes}}'
+                                            {{$rsbnp->lat_second}}"
+                                            {{$rsbnp->lat_direction}}
+                                        </span>
+                                </div>
+                            <div class="col-4">
+                                    <span class="text-danger" for="">Keterangan Rencana SBNP</span>
+                                    <span class="fs-6 fw-bolder d-block">{{$rsbnp->keterangan_rencana}}</span>
+                                </div>
+                            </div>
+                        @endforeach
 
-
+                    </div>
 
 
 
@@ -180,12 +194,13 @@
                                             alt="">
                                     </div>
                                     <div>
-                                        <a href="{{asset('/dokumen-permohonan/permohonan-teknis/pba/pl/'.$data->peta_laut)}}"  target="_blank">
+                                        <a href="{{asset('/dokumen-permohonan/rekomendasi-teknis/zonasi-perairan/pl/'.$data->peta_laut)}}"  target="_blank">
                                             <button class="btn btn-sm btn-success">Download</button>
                                         </a>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

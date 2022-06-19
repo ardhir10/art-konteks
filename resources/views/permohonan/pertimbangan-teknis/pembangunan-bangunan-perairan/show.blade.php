@@ -86,7 +86,7 @@
                                         alt="">
                                 </div>
                                 <div>
-                                    <a href="{{asset('/dokumen-permohonan/permohonan-teknis/terminal/sp/'.$data->surat_permohonan)}}"  target="_blank">
+                                    <a href="{{asset('/dokumen-permohonan/permohonan-teknis/pbp/sp/'.$data->surat_permohonan)}}"  target="_blank">
                                         <button class="btn btn-sm btn-success">Download</button>
                                     </a>
                                 </div>
@@ -122,10 +122,10 @@
 
                     {{-- LOKASI PEKERJAAN  --}}
                     <div class="form-group mb-3">
-                        <span class="fs-5 fw-bolder d-block mb-2">Lokasi Terminal Umum</span>
+                        <span class="fs-5 fw-bolder d-block mb-2">Lokasi Pekerjaan</span>
                         <div class="row">
                             <div class="col-4">
-                                <span class="text-danger" for="">Nama Lokasi Terminal Umum</span>
+                                <span class="text-danger" for="">Nama Lokasi Pekerjaan</span>
                                 <span class="fs-6 fw-bolder d-block">{{$data->lokasi_pekerjaan}}</span>
                             </div>
                             <div class="col-4">
@@ -180,7 +180,7 @@
                                             alt="">
                                     </div>
                                     <div>
-                                        <a href="{{asset('/dokumen-permohonan/permohonan-teknis/terminal/pl/'.$data->peta_laut)}}"  target="_blank">
+                                        <a href="{{asset('/dokumen-permohonan/permohonan-teknis/pbp/pl/'.$data->peta_laut)}}"  target="_blank">
                                             <button class="btn btn-sm btn-success">Download</button>
                                         </a>
                                     </div>
