@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                            <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'pekerjaan-bawah-air'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/pekbawahair@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="item d-flex  clickable-row-2" data-href=''>
+                        <div class="item d-flex  clickable-row-2" data-href='{{route('permohonan.pertimbangan-teknis',['type'=>'pembangunan-bangunan-perairan'])}}'>
                                 <div>
                                     <img src="{{asset('images/icon-permohonan/bangunanperairan@2x.png')}}" height="70px" alt="">
                                 </div>
@@ -295,6 +295,11 @@
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_terminal')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-tuks.show',['id'=>$item->id])}}'>
+
+                            @elseif ($item->getTable() == 'permohonan_pt_pba')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show',['id'=>$item->id])}}'>
+                            @elseif ($item->getTable() == 'permohonan_pt_pbp')
+                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show',['id'=>$item->id])}}'>
                             @else
                             @endif
                                 <td>{{$loop->iteration}} </td>

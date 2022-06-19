@@ -61,6 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/permohonan/pertimbangan-teknis/terminal-umum/{id}', 'PertekTerminalTumController@show')->name('permohonan.pertimbangan-teknis.terminal-umum.show');
     Route::post('/permohonan/pertimbangan-teknis/terminal-umum', 'PertekTerminalTumController@store')->name('permohonan.pertimbangan-teknis.terminal-umum.store');
 
+    // --- PEKERJAAN BAWAH AIR
+    Route::get('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air/{id}', 'PertekPekerjaanBawahAirController@show')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show');
+    Route::post('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air', 'PertekPekerjaanBawahAirController@store')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.store');
+
+    // --- PEKERJAAN BAWAH AIR
+    Route::get('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan/{id}', 'PertekPembangunanBangunanPerairanController@show')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show');
+    Route::post('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan', 'PertekPembangunanBangunanPerairanController@store')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.store');
+
 
 
     // --- MASTER DATA
