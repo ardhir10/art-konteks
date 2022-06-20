@@ -492,7 +492,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 @endpush
 @push('scripts')
 <script>

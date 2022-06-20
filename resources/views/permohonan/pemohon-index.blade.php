@@ -196,7 +196,7 @@
                                                 <div class="avatar-title bg-success rounded-circle ">
                                                 </div>
                                             </div>
-                                            <span class="mt-1 ">Disetujui</span>
+                                            <span class="mt-1 ">Dokumen Terbit</span>
                                         </div>
                                     </td>
                                     <td>
@@ -214,7 +214,7 @@
                                                 <div class="avatar-title bg-dark rounded-circle ">
                                                 </div>
                                             </div>
-                                            <span class="mt-1 ">Selesai</span>
+                                            <span class="mt-1 ">Selesai Tindak Lanjut</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -294,8 +294,13 @@
                             @elseif ($item->getTable() == 'permohonan_pt_reklamasi')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.reklamasi.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_terminal')
-                                <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-tuks.show',['id'=>$item->id])}}'>
-
+                                    @if ($item->type == 'TERMINAL_UMUM')
+                                        <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-umum.show',['id'=>$item->id])}}'>
+                                    @elseif($item->type == 'TERSUS')
+                                            <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-khusus.show',['id'=>$item->id])}}'>
+                                    @else
+                                        <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.terminal-tuks.show',['id'=>$item->id])}}'>
+                                    @endif
                             @elseif ($item->getTable() == 'permohonan_pt_pba')
                                 <tr class='clickable-row' data-href='{{route('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show',['id'=>$item->id])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_pbp')

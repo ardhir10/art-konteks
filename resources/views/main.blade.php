@@ -337,6 +337,11 @@
             background: #0bb9795b !important;
         }
 
+        /* STYLE MAPS VIE */
+        #mapPolygon { height: 500px; }
+        #mapSbnp { height: 500px; }
+
+
     </style>
 
 </head>
@@ -384,6 +389,8 @@
     <!-- END layout-wrapper -->
 
     @stack('modals')
+    @include('modal-view-map.maps-polygon')
+    @include('modal-view-map.maps-sbnp')
 
     <!-- Right Sidebar -->
     @include('layouts.partials.right-bar')
@@ -400,11 +407,8 @@
     <script src="{{asset('/assets')}}/libs/feather-icons/feather.min.js"></script>
 
     <!-- apexcharts -->
-    <script src="{{asset('/assets')}}/libs/apexcharts/apexcharts.min.js"></script>
 
     <!-- Vector map-->
-    <script src="{{asset('/assets')}}/libs/jsvectormap/js/jsvectormap.min.js"></script>
-    <script src="{{asset('/assets')}}/libs/jsvectormap/maps/world-merc.js"></script>
 
     {{-- <script src="{{asset('/assets')}}/js/pages/dashboard-sales.init.js"></script> --}}
     <script>
@@ -424,16 +428,21 @@
 
     <script src="{{asset('/assets')}}/libs/%40simonwep/pickr/pickr.min.js"></script>
     <script src="{{asset('/assets/libs/select2/select2.min.js')}}"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-    crossorigin=""></script>
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'
-    rel='stylesheet' />
+
+
     <script src="{{asset('assets/libs/axios/axios.min.js')}}"></script>
+
+    {{-- MAPS REQUIREMENT --}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+
+    <link rel="stylesheet" href="{{asset('assets/css/maps.css')}}">
+
+
     @stack('scripts')
     <script>
         $('.ada').val();
@@ -482,6 +491,68 @@
         $("#data-table").on("click", ".clickable-row", function(){
             window.location = $(this).data("href");
         });
+
+        // --- MAPS VIEW SCRIPTS
+        function showPolygon(params,idModal,title) {
+            $('#mapPolygonTitle').text(title)
+            let latLong = params.map(getLatLong)
+            let latLongView = latLong[0];
+            // -- DEFINE MAPS
+            let map = L.map('mapPolygon', {
+                center: latLongView,
+                zoom: 11
+            });
+            // -- MAPS STYLE
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            // -- DEFINE PLYGON
+            var polygon = L.polygon(latLong,{
+                fillColor:'red',
+                color:'red'
+            }).addTo(map);
+            // -- MAKE MAPS PROPER ON MODAL
+            $('#'+idModal).on('shown.bs.modal', function () {
+                map.invalidateSize();
+            })
+            // -- DESTROY MAPS ON MODAL
+            $('#'+idModal).on('hidden.bs.modal', function () {
+                $("#map-box-polygon").html("");
+                $("#map-box-polygon").html('<div id="mapPolygon"></div>');
+            })
+        }
+
+        function showSbnp(params,idModal,title) {
+            $('#mapSbnpTitle').text(title)
+            let latLongView = params;
+            // -- DEFINE MAPS
+            let map = L.map('mapSbnp', {
+                center: latLongView,
+                zoom: 11
+            });
+            // -- MAPS STYLE
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            // -- DEFINE MARKER
+            L.marker(params).addTo(map)
+                // .bindPopup(title)
+                // .openPopup()
+                ;
+            // -- MAKE MAPS PROPER ON MODAL
+            $('#'+idModal).on('shown.bs.modal', function () {
+                map.invalidateSize();
+            })
+            // -- DESTROY MAPS ON MODAL
+            $('#'+idModal).on('hidden.bs.modal', function () {
+                $("#map-box-sbnp").html("");
+                $("#map-box-sbnp").html('<div id="mapSbnp"></div>');
+            })
+        }
+
+        function getLatLong(ldmp) {
+            return [ldmp.long_dec,ldmp.lat_dec];
+        }
 
     </script>
 

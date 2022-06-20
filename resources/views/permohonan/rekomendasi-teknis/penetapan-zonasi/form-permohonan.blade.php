@@ -570,7 +570,7 @@ Tanjung Priok pada aplikasi ini.
 
                     </div>
 
-                    <span for="" class="d-block">Keterangan Rencana </span>
+                    <span for="" class="d-block">Spesifikasi SBNP </span>
                     <textarea name="rpsbnp_keterangan_rencana[]" id="" cols="30" rows="2" class="form-control"></textarea>
                 </div>
             </div>

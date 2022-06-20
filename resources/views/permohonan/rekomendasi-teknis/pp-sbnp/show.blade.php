@@ -128,11 +128,11 @@
                         <span class="fs-5 fw-bolder d-block mb-2">Rencana Penempatan SBNP</span>
                         @foreach ($data->rencanaSbnp as $rsbnp)
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-3">
                                     <span class="text-danger" for="">SBNP</span>
                                     <span class="fs-6 fw-bolder d-block">{{$rsbnp->jenis_sbnp}}</span>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <span class="text-danger" for="">Titik Koordinat</span>
                                         <span class="fs-6 fw-bolder d-block">
                                             {{$rsbnp->long_degrees}}°
@@ -146,8 +146,11 @@
                                             {{$rsbnp->lat_direction}}
                                         </span>
                                 </div>
-                            <div class="col-4">
-                                    <span class="text-danger" for="">Keterangan Rencana SBNP</span>
+                            <div class="col-3">
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#sbnpMaps" onclick='showSbnp(@json([$rsbnp->lat_dec,$rsbnp->long_dec]),"sbnpMaps",@json($rsbnp->jenis_sbnp))'>LIHAT PETA</button>
+                            </div>
+                            <div class="col-3">
+                                    <span class="text-danger" for="">Spesifikasi SBNP</span>
                                     <span class="fs-6 fw-bolder d-block">{{$rsbnp->keterangan_rencana}}</span>
                                 </div>
                             </div>

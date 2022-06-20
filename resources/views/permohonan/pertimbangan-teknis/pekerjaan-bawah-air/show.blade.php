@@ -145,7 +145,8 @@
                                     @endforeach
                             </div>
                             <div class="col-4">
-                                <span class="text-danger fw-bolder fs-6" for=""></span>
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#polygonMaps" onclick='showPolygon(@json($data->lokasiPekerjaan),"polygonMaps","Lokasi Pekerjaan")'>LIHAT PETA</button>
+
                             </div>
                         </div>
                     </div>
