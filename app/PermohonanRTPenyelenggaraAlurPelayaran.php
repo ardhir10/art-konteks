@@ -50,14 +50,20 @@ class PermohonanRTPenyelenggaraAlurPelayaran extends Model
             ->where('type', 'rencana_sbnp_rt_pap');
     }
 
-    // ---IS NOTIFY
-    public function isNotify($roleName = null)
+     // ---IS NOTIFY
+    public function isNotify($id, $tablePermohonan, $roleName = null)
     {
-        if ($roleName == null) {
-            if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
-                return true;
-            }
+        $lastApproval = ApprovalProcess::where('from_table', $tablePermohonan)
+            ->where('permohonan_id', $id)
+            ->orderBy('id','desc')
+            ->first();
+
+        if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
+            return true;
+        } elseif ($lastApproval->notify_to_role ?? null == $roleName) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }

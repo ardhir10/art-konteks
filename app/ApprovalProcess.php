@@ -12,11 +12,15 @@ class ApprovalProcess extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'approve_by_id', 'id');
+        return $this->belongsTo(User::class, 'created_by_id', 'id');
     }
 
-    public function diminta()
+
+    public function documents()
     {
-        return $this->belongsTo(Role::class, 'role_to_name', 'name');
+        return $this->hasMany(DocumentLibrary::class, 'approval_process_id', 'id');
+
     }
+
+
 }

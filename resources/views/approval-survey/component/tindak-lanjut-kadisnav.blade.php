@@ -11,7 +11,9 @@
                 <div class="modal-body">
                 <div class="card-body row">
                     <div class="col-12">
-                        <form action="">
+                        <form action="{{route('approval-survey.tindak-lanjut',$data->id)}}" method="POST">
+                            @csrf
+                            <input type="hidden" value="{{$data->getTable()}}" name="permohonan_type">
                             <div class="form-group row">
                                 <div class="col-6">
                                     <div class="form-check mb-2">
@@ -31,7 +33,7 @@
                                 <div class="col-12">
                                     <label for="">Isi Disposisi</label>
                                     <div class="form-check mb-1">
-                                        <input class="form-check-input" type="radio" id="harapMenjelaskan" value="Harap Mejelaskan"
+                                        <input class="form-check-input" type="radio" id="harapMenjelaskan" value="Harap Menjelaskan"
                                           name="isi_disposisi">
                                         <label class="form-check-label" for="harapMenjelaskan">Harap Menjelaskan</label>
                                     </div>

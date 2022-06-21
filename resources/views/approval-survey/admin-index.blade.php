@@ -199,8 +199,8 @@
                                 <td>{{$loop->iteration}} </td>
                                 <td style="white-space: nowrap">
                                     {{$item->no_permohonan}}
-                                    {{$item->isNotify()}}
-                                    @if ($item->isNotify())
+                                    {{$item->isNotify($item->id,$item->getTable(),Auth::user()->role->name ?? null)}}
+                                    @if ($item->isNotify($item->id,$item->getTable(),Auth::user()->role->name ?? null))
                                         <span class="noti-dotnya bg-danger float-end" style="position: inherit"> ! </span>
                                     @endif
                                 </td>

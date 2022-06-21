@@ -88,6 +88,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/approval-survey', 'ApprovalSurveyController@index')->name('approval-survey');
     Route::get('/approval-survey/review/{id}', 'ApprovalSurveyController@review')->name('approval-survey.review');
 
+    Route::post('/approval-survey/tindak-lanjut/{id}', 'ApprovalSurveyController@tindakLanjut')->name('approval-survey.tindak-lanjut');
+    Route::post('/approval-survey/tindak-lanjut/disposisi/{id}', 'ApprovalSurveyController@tindakLanjutDisposisi')->name('approval-survey.tindak-lanjut.disposisi');
+
 
 
     // --- MASTER DATA

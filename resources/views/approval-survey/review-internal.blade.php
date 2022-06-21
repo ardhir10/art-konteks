@@ -76,7 +76,7 @@
                             <div class="col-lg-6">
                                 <h4>{{$page_title}}</h4>
                                 <h5 class="text-danger">{{$data->no_permohonan}}
-                                    @if ($data->isNotify())
+                                    @if ($data->isNotify($data->id,$data->getTable(),Auth::user()->role->name ?? null))
                                         <span class="noti-dotnya bg-danger"> ! </span>
                                     @endif
                                 </h5>
@@ -84,7 +84,7 @@
                             </div>
                             <div class="col-lg-4 offset-lg-2">
                                 <div class="text-end">
-                                     @if ($data->isNotify())
+                                    @if ($data->isNotify($data->id,$data->getTable(),Auth::user()->role->name ?? null))
                                         <button class="btn btn-lg btn-danger w-100 " data-bs-toggle="modal" data-bs-target="#myModal">TINDAK LANJUT</button>
                                         <span class="d-block">Untuk melanjutkan proses terhadap permohonan ini Anda harus menekan button TINDAK LANJUT di atas.</span>
                                     @endif
@@ -98,6 +98,7 @@
                         {{-- TIMELINE PROGRESS --}}
                         @include('approval-survey.component.timeline')
 
+                        {{-- DETAIL PERMOHONAN --}}
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
@@ -137,39 +138,8 @@
                         </div>
 
                         {{-- PROSES PERMOHONAN --}}
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="fw-bolder etxt">Proses Permohonan</h3>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card" style="border: 1px solid">
-                                            <div class="card-body p-4">
-                                                <p class="text-danger mb-0">
-                                                    {{date('d F T',strtotime($data->created_at))}} ||
-                                                    {{date('H:i',strtotime($data->created_at))}}</p>
+                        @include('approval-survey.component.proses-permohonan')
 
-                                                    <span class="d-block fw-bold ">Permohonan Diajukan oleh Pemohon</span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="card" style="border: 1px solid;background:#A11C4B;color:white;">
-                                            <div class="card-body p-4">
-                                                <p class="text-white mb-0">
-                                                    {{date('d F T',strtotime($data->created_at))}} ||
-                                                    {{date('H:i',strtotime($data->created_at))}}</p>
-                                                    <span class="d-block">Kepala Distrik Navigasi memberikan Disposisi Kepada Kepala Bidang Operasi</span>
-                                                    <span class="d-block fw-bold mb-2">HARAP MENJELASKAN</span>
-                                                    <span class="d-block ">Keterangan :</span>
-                                                    <span class="d-block fw-bold ">Pak Kabid Ops tolong Jelaskan maksud dari permohonan ini , saya kurang jelas apa maksud dari pemohon</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
 
                     </div>
@@ -184,7 +154,14 @@
 
 
 @push('modals')
-    @include('approval-survey.component.tindak-lanjut-kadisnav')
+    @if (Auth::user()->role->name == 'Kadisnav')
+        @include('approval-survey.component.tindak-lanjut-kadisnav')
+    @elseif (Auth::user()->role->name == 'Kabid OPS')
+        @include('approval-survey.component.tindak-lanjut-kabidops')
+    @elseif (Auth::user()->role->name == 'Kakel Pengla')
+        @include('approval-survey.component.tindak-lanjut-kakelpengla')
+    @endif
+
     @include('approval-survey.component.detail-perusahaan')
     @include('approval-survey.component.detail-permohonan-pengerukan')
 @endpush
@@ -215,13 +192,19 @@
             $('#disposisiKe').addClass('d-none');
         }
     })
+
+    function tindakLanjut(val){
+        if(val =='Disposisi Kepada'){
+            $('.disposisi-kepada').removeClass('d-none');
+        }else{
+            $('.disposisi-kepada').addClass('d-none');
+        }
+    }
     $(".clickable-row").click(function () {
         window.location = $(this).data("href");
     });
 
 
-    $('input[type=radio][name=tindak_lanjut]').change(function() {
-       alert(this.value);
-    });
+
 </script>
 @endpush
