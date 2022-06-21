@@ -4,6 +4,7 @@ namespace App;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PermohonanPTTerminal extends Model
 {
@@ -53,4 +54,14 @@ class PermohonanPTTerminal extends Model
             ->where('type', 'rencana_sbnp_terminal_khusus');
     }
 
+    // ---IS NOTIFY
+    public function isNotify($roleName = null)
+    {
+        if ($roleName == null) {
+            if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

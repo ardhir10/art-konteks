@@ -45,6 +45,12 @@
                         <span class="menu-item" data-key="t-sales">Permohonan</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('approval-survey')}}">
+                        <i class="icon nav-icon" data-feather="trello"></i>
+                        <span class="menu-item" data-key="t-sales">Aproval dan Survey</span>
+                    </a>
+                </li>
 
 
 

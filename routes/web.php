@@ -42,47 +42,51 @@ Route::middleware('auth')->group(function () {
     Route::get('/permohonan/pertimbangan-teknis', 'PermohonanController@pertimbanganTeknis')->name('permohonan.pertimbangan-teknis');
     Route::get('/permohonan/rekomendasi-teknis', 'PermohonanController@rekomendasiTeknis')->name('permohonan.rekomendasi-teknis');
 
-    // -- PENGERUKAN
-    Route::get('/permohonan/pertimbangan-teknis/pengerukan/{id}', 'PertekPengerukanController@show')->name('permohonan.pertimbangan-teknis.pengerukan.show');
-    Route::post('/permohonan/pertimbangan-teknis/pengerukan', 'PertekPengerukanController@store')->name('permohonan.pertimbangan-teknis.pengerukan.store');
+        // -- PENGERUKAN
+        Route::get('/permohonan/pertimbangan-teknis/pengerukan/{id}', 'PertekPengerukanController@show')->name('permohonan.pertimbangan-teknis.pengerukan.show');
+        Route::post('/permohonan/pertimbangan-teknis/pengerukan', 'PertekPengerukanController@store')->name('permohonan.pertimbangan-teknis.pengerukan.store');
 
-    // --- REKLAMASI
-    Route::get('/permohonan/pertimbangan-teknis/reklamasi/{id}', 'PertekReklamasiController@show')->name('permohonan.pertimbangan-teknis.reklamasi.show');
-    Route::post('/permohonan/pertimbangan-teknis/reklamasi', 'PertekReklamasiController@store')->name('permohonan.pertimbangan-teknis.reklamasi.store');
+        // --- REKLAMASI
+        Route::get('/permohonan/pertimbangan-teknis/reklamasi/{id}', 'PertekReklamasiController@show')->name('permohonan.pertimbangan-teknis.reklamasi.show');
+        Route::post('/permohonan/pertimbangan-teknis/reklamasi', 'PertekReklamasiController@store')->name('permohonan.pertimbangan-teknis.reklamasi.store');
 
-    // --- TERMINAL KHUSUS
-    Route::get('/permohonan/pertimbangan-teknis/terminal-khusus/{id}', 'PertekTerminalKhususController@show')->name('permohonan.pertimbangan-teknis.terminal-khusus.show');
-    Route::post('/permohonan/pertimbangan-teknis/terminal-khusus', 'PertekTerminalKhususController@store')->name('permohonan.pertimbangan-teknis.terminal-khusus.store');
+        // --- TERMINAL KHUSUS
+        Route::get('/permohonan/pertimbangan-teknis/terminal-khusus/{id}', 'PertekTerminalKhususController@show')->name('permohonan.pertimbangan-teknis.terminal-khusus.show');
+        Route::post('/permohonan/pertimbangan-teknis/terminal-khusus', 'PertekTerminalKhususController@store')->name('permohonan.pertimbangan-teknis.terminal-khusus.store');
 
-    // --- TERMINAL TUKS
-    Route::get('/permohonan/pertimbangan-teknis/terminal-tuks/{id}', 'PertekTerminalTuksController@show')->name('permohonan.pertimbangan-teknis.terminal-tuks.show');
-    Route::post('/permohonan/pertimbangan-teknis/terminal-tuks', 'PertekTerminalTuksController@store')->name('permohonan.pertimbangan-teknis.terminal-tuks.store');
+        // --- TERMINAL TUKS
+        Route::get('/permohonan/pertimbangan-teknis/terminal-tuks/{id}', 'PertekTerminalTuksController@show')->name('permohonan.pertimbangan-teknis.terminal-tuks.show');
+        Route::post('/permohonan/pertimbangan-teknis/terminal-tuks', 'PertekTerminalTuksController@store')->name('permohonan.pertimbangan-teknis.terminal-tuks.store');
 
-    // --- TERMINAL UMUM
-    Route::get('/permohonan/pertimbangan-teknis/terminal-umum/{id}', 'PertekTerminalTumController@show')->name('permohonan.pertimbangan-teknis.terminal-umum.show');
-    Route::post('/permohonan/pertimbangan-teknis/terminal-umum', 'PertekTerminalTumController@store')->name('permohonan.pertimbangan-teknis.terminal-umum.store');
+        // --- TERMINAL UMUM
+        Route::get('/permohonan/pertimbangan-teknis/terminal-umum/{id}', 'PertekTerminalTumController@show')->name('permohonan.pertimbangan-teknis.terminal-umum.show');
+        Route::post('/permohonan/pertimbangan-teknis/terminal-umum', 'PertekTerminalTumController@store')->name('permohonan.pertimbangan-teknis.terminal-umum.store');
 
-    // --- PEKERJAAN BAWAH AIR
-    Route::get('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air/{id}', 'PertekPekerjaanBawahAirController@show')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show');
-    Route::post('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air', 'PertekPekerjaanBawahAirController@store')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.store');
+        // --- PEKERJAAN BAWAH AIR
+        Route::get('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air/{id}', 'PertekPekerjaanBawahAirController@show')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.show');
+        Route::post('/permohonan/pertimbangan-teknis/pekerjaan-bawah-air', 'PertekPekerjaanBawahAirController@store')->name('permohonan.pertimbangan-teknis.pekerjaan-bawah-air.store');
 
-    // --- PEKERJAAN BAWAH AIR
-    Route::get('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan/{id}', 'PertekPembangunanBangunanPerairanController@show')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show');
-    Route::post('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan', 'PertekPembangunanBangunanPerairanController@store')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.store');
-
-
-    // --- PENYELENGGARA ALUR PELAYARAN
-    Route::get('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran/{id}', 'RekomPenyelenggaraAlurPelayaranController@show')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.show');
-    Route::post('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran', 'RekomPenyelenggaraAlurPelayaranController@store')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.store');
-
-    // --- PEMBANGUNAN/PEMASANGAN SBNP
-    Route::get('/permohonan/rekomendasi-teknis/pp-sbnp/{id}', 'RekomPpSbnpController@show')->name('permohonan.rekomendasi-teknis.pp-sbnp.show');
-    Route::post('/permohonan/rekomendasi-teknis/pp-sbnp', 'RekomPpSbnpController@store')->name('permohonan.rekomendasi-teknis.pp-sbnp.store');
+        // --- PEKERJAAN BAWAH AIR
+        Route::get('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan/{id}', 'PertekPembangunanBangunanPerairanController@show')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.show');
+        Route::post('/permohonan/pertimbangan-teknis/pembangunan-bangunan-perairan', 'PertekPembangunanBangunanPerairanController@store')->name('permohonan.pertimbangan-teknis.pembangunan-bangunan-perairan.store');
 
 
-     // --- PEMBANGUNAN/PEMASANGAN SBNP
-    Route::get('/permohonan/rekomendasi-teknis/zonasi-perairan/{id}', 'RekomZonasiPerairanController@show')->name('permohonan.rekomendasi-teknis.zonasi-perairan.show');
-    Route::post('/permohonan/rekomendasi-teknis/zonasi-perairan', 'RekomZonasiPerairanController@store')->name('permohonan.rekomendasi-teknis.zonasi-perairan.store');
+        // --- PENYELENGGARA ALUR PELAYARAN
+        Route::get('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran/{id}', 'RekomPenyelenggaraAlurPelayaranController@show')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.show');
+        Route::post('/permohonan/rekomendasi-teknis/penyelenggara-alur-pelayaran', 'RekomPenyelenggaraAlurPelayaranController@store')->name('permohonan.rekomendasi-teknis.penyelenggara-alur-pelayaran.store');
+
+        // --- PEMBANGUNAN/PEMASANGAN SBNP
+        Route::get('/permohonan/rekomendasi-teknis/pp-sbnp/{id}', 'RekomPpSbnpController@show')->name('permohonan.rekomendasi-teknis.pp-sbnp.show');
+        Route::post('/permohonan/rekomendasi-teknis/pp-sbnp', 'RekomPpSbnpController@store')->name('permohonan.rekomendasi-teknis.pp-sbnp.store');
+
+
+        // --- PEMBANGUNAN/PEMASANGAN SBNP
+        Route::get('/permohonan/rekomendasi-teknis/zonasi-perairan/{id}', 'RekomZonasiPerairanController@show')->name('permohonan.rekomendasi-teknis.zonasi-perairan.show');
+        Route::post('/permohonan/rekomendasi-teknis/zonasi-perairan', 'RekomZonasiPerairanController@store')->name('permohonan.rekomendasi-teknis.zonasi-perairan.store');
+
+    // --- APPROVAL & SURVEY
+    Route::get('/approval-survey', 'ApprovalSurveyController@index')->name('approval-survey');
+    Route::get('/approval-survey/review/{id}', 'ApprovalSurveyController@review')->name('approval-survey.review');
 
 
 

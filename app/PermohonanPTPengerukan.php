@@ -4,6 +4,7 @@ namespace App;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PermohonanPTPengerukan extends Model
 {
@@ -37,5 +38,14 @@ class PermohonanPTPengerukan extends Model
             ->where('type', 'titik_dumping');
     }
 
-
+    // ---IS NOTIFY
+    public function isNotify($roleName = null)
+    {
+        if ($roleName == null) {
+            if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

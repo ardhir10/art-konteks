@@ -4,6 +4,7 @@ namespace App;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PermohonanRTZonasiPerairan extends Model
 {
@@ -37,5 +38,15 @@ class PermohonanRTZonasiPerairan extends Model
             ->where('type', 'lokasi_zonasi_perairan');
     }
 
+    // ---IS NOTIFY
+    public function isNotify($roleName=null)
+    {
+        if($roleName == null){
+            if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

@@ -449,7 +449,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    @include('modal-view-map.maps-polygon')
+
 @endpush
 
 @push('scripts')
