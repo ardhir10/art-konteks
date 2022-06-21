@@ -33,9 +33,14 @@
                                 </div>
                                 <div class="col-6 disposisi-kepada">
                                    <select name="disposisi_kepada_role" class="form-select form-control-sm" id="">
-                                        @foreach ($surveyor_pengla as $surveyor)
-                                            <option value="{{$surveyor->id}}">{{$surveyor->name}} </option>
-                                        @endforeach
+                                        @if ($data->prosesPermohonan->last()->tindak_lanjut == 'Harap Menjelaskan')
+                                            <option value="Kadisnav">Kepala Distrik Navigasi </option>
+                                        @else
+                                            @foreach ($surveyor_pengla as $surveyor)
+                                                <option value="{{$surveyor->id}}">{{$surveyor->name}} </option>
+                                            @endforeach
+                                        @endif
+
                                    </select>
                                 </div>
                             </div>
