@@ -1,3 +1,49 @@
+
+
+@if ($data->prosesPermohonan->last()->tindak_lanjut ?? null == 'Draft Rekom/Pertek')
+<div>
+    <!-- sample modal content -->
+    <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Tindak Lanjut</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                <div class="card-body row">
+                    <div class="col-12">
+                        <form action="{{route('approval-survey.tindak-lanjut.rilis-draft-rekom-pertek',$data->id)}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @if(session('errors'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <input type="hidden" value="{{$data->getTable()}}" name="permohonan_type">
+                            <div class="form-group row mb-2">
+                                <div class="col-12">
+                                    <label for="">Tanggal Rilis</label>
+                                    <input type="date" name="tanggal_rilis" id="" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <button class="btn btn-success "> RILIS PERTEK/REKOM</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+@else
 <div>
     <!-- sample modal content -->
     <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -83,3 +129,4 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+@endif

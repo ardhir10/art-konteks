@@ -50,20 +50,43 @@ class PermohonanRTPenyelenggaraAlurPelayaran extends Model
             ->where('type', 'rencana_sbnp_rt_pap');
     }
 
-     // ---IS NOTIFY
+    // ---IS NOTIFY
     public function isNotify($id, $tablePermohonan, $roleName = null)
     {
         $lastApproval = ApprovalProcess::where('from_table', $tablePermohonan)
             ->where('permohonan_id', $id)
-            ->orderBy('id','desc')
+            ->orderBy('id', 'desc')
             ->first();
-
-        if (($this->status == null) && (Auth::user()->role->name == 'Kadisnav')) {
+        if ($this->status == null && Auth::user()->role->name == 'Kadisnav') {
             return true;
-        } elseif ($lastApproval->notify_to_role ?? null == $roleName) {
-            return true;
+        } elseif (($lastApproval->notify_to_role ?? null) == $roleName) {
+            // --- JIKA SURVEYOR PENGLA CHECK BY ID
+            if (($lastApproval->notify_to_role ?? null) == 'Surveyor Pengla') {
+                if (($lastApproval->notify_to_id ?? null) == Auth::user()->id) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
         } else {
             return false;
         }
     }
+
+    // --- PROSES PERMOHONAN
+    public function prosesPermohonan()
+    {
+
+        if (Auth::user()->type == 'Internal') {
+            return $this->hasMany(ApprovalProcess::class, 'permohonan_id', 'id')
+                ->where('from_table', 'permohonan_rt_pap');
+        } else {
+            return $this->hasMany(ApprovalProcess::class, 'permohonan_id', 'id')
+                ->where('from_table', 'permohonan_rt_pap')
+                ->where('visible', 1);
+        }
+    }
+
 }

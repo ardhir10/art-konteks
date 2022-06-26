@@ -91,6 +91,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/approval-survey/tindak-lanjut/{id}', 'ApprovalSurveyController@tindakLanjut')->name('approval-survey.tindak-lanjut');
     Route::post('/approval-survey/tindak-lanjut/disposisi/{id}', 'ApprovalSurveyController@tindakLanjutDisposisi')->name('approval-survey.tindak-lanjut.disposisi');
 
+    Route::post('/approval-survey/tindak-lanjut/draft-rekom-pertek/{id}', 'ApprovalSurveyController@tindakLanjutDraftRekomPertek')->name('approval-survey.tindak-lanjut.draft-rekom-pertek');
+    Route::post('/approval-survey/tindak-lanjut/rilis-draft-rekom-pertek/{id}', 'ApprovalSurveyController@tindakLanjutRilisDraftRekomPertek')->name('approval-survey.tindak-lanjut.rilis-draft-rekom-pertek');
+    Route::post('/approval-survey/tindak-lanjut/penomoran-draft-rekom-pertek/{id}', 'ApprovalSurveyController@tindakLanjutPenomoran')->name('approval-survey.tindak-lanjut.penomoran-draft-rekom-pertek');
+
+    // --- TINDAK LANJUT REKOMENDASI KSOP
+    Route::post('/tindak-lanjut/rekomendasi-ksop/{id}', 'TindakLanjutController@rekomendasiKsop')->name('approval-survey.tindak-lanjut.pemohon-rekomendasi-ksop');
+    Route::post('/tindak-lanjut/pemohon-pembangunan-pelaksanaan/{id}', 'TindakLanjutController@pembangunanPelaksanaan')->name('approval-survey.tindak-lanjut.pemohon-pembangunan-pelaksanaan');
+    Route::post('/tindak-lanjut/pemohon-pembangunan-penyelesaian/{id}', 'TindakLanjutController@pembangunanPenyelesaian')->name('approval-survey.tindak-lanjut.pemohon-pembangunan-penyelesaian');
+
 
 
     // --- MASTER DATA
@@ -123,55 +132,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/jenis-zonasi-perairan/{id}/update', 'jenisZonasiPerairanController@update')->name('jenis-zonasi-perairan.update');
         Route::get('/jenis-zonasi-perairan/{id}/delete', 'jenisZonasiPerairanController@delete')->name('jenis-zonasi-perairan.delete');
 
-        // ---KAPAL NEGARA
-        Route::get('/kapal-negara', 'KapalNegaraController@index')->name('kapal-negara.index');
-        Route::get('/kapal-negara/add', 'KapalNegaraController@create')->name('kapal-negara.create');
-        Route::post('/kapal-negara', 'KapalNegaraController@store')->name('kapal-negara.store');
-        Route::get('/kapal-negara/{id}/edit', 'KapalNegaraController@edit')->name('kapal-negara.edit');
-        Route::post('/kapal-negara/{id}/update', 'KapalNegaraController@update')->name('kapal-negara.update');
-        Route::get('/kapal-negara/{id}/delete', 'KapalNegaraController@delete')->name('kapal-negara.delete');
+        // ---KSOP
+        Route::get('/ksop', 'KsopController@index')->name('ksop.index');
+        Route::get('/ksop/add', 'KsopController@create')->name('ksop.create');
+        Route::post('/ksop', 'KsopController@store')->name('ksop.store');
+        Route::get('/ksop/{id}/edit', 'KsopController@edit')->name('ksop.edit');
+        Route::post('/ksop/{id}/update', 'KsopController@update')->name('ksop.update');
+        Route::get('/ksop/{id}/delete', 'KsopController@delete')->name('ksop.delete');
 
-
-        // ---STASIUN VTS
-        Route::get('/stasiun-vts', 'StasiunVtsController@index')->name('stasiun-vts.index');
-        Route::get('/stasiun-vts/add', 'StasiunVtsController@create')->name('stasiun-vts.create');
-        Route::post('/stasiun-vts', 'StasiunVtsController@store')->name('stasiun-vts.store');
-        Route::get('/stasiun-vts/{id}/edit', 'StasiunVtsController@edit')->name('stasiun-vts.edit');
-        Route::post('/stasiun-vts/{id}/update', 'StasiunVtsController@update')->name('stasiun-vts.update');
-        Route::get('/stasiun-vts/{id}/delete', 'StasiunVtsController@delete')->name('stasiun-vts.delete');
-
-        // ---STASIUN RADIO PANTAI
-        Route::get('/stasiun-radio-pantai', 'StasiunRadioPantaiController@index')->name('stasiun-radio-pantai.index');
-        Route::get('/stasiun-radio-pantai/add', 'StasiunRadioPantaiController@create')->name('stasiun-radio-pantai.create');
-        Route::post('/stasiun-radio-pantai', 'StasiunRadioPantaiController@store')->name('stasiun-radio-pantai.store');
-        Route::get('/stasiun-radio-pantai/{id}/edit', 'StasiunRadioPantaiController@edit')->name('stasiun-radio-pantai.edit');
-        Route::post('/stasiun-radio-pantai/{id}/update', 'StasiunRadioPantaiController@update')->name('stasiun-radio-pantai.update');
-        Route::get('/stasiun-radio-pantai/{id}/delete', 'StasiunRadioPantaiController@delete')->name('stasiun-radio-pantai.delete');
-
-
-        // ---KATEGORI BARANG
-        Route::get('/kategori-barang', 'KategoriBarangController@index')->name('kategori-barang.index');
-        Route::get('/kategori-barang/add', 'KategoriBarangController@create')->name('kategori-barang.create');
-        Route::post('/kategori-barang', 'KategoriBarangController@store')->name('kategori-barang.store');
-        Route::get('/kategori-barang/{id}/edit', 'KategoriBarangController@edit')->name('kategori-barang.edit');
-        Route::post('/kategori-barang/{id}/update', 'KategoriBarangController@update')->name('kategori-barang.update');
-        Route::get('/kategori-barang/{id}/delete', 'KategoriBarangController@delete')->name('kategori-barang.delete');
-
-        Route::get('/sub-kategori-barang', 'SubKategoriBarangController@index')->name('sub-kategori-barang.index');
-        Route::get('/sub-kategori-barang/add', 'SubKategoriBarangController@create')->name('sub-kategori-barang.create');
-        Route::get('/sub-kategori-barang', 'SubKategoriBarangController@index')->name('sub-kategori-barang.index');
-        Route::post('/sub-kategori-barang', 'SubKategoriBarangController@store')->name('sub-kategori-barang.store');
-        Route::get('/sub-kategori-barang/{id}/edit', 'SubKategoriBarangController@edit')->name('sub-kategori-barang.edit');
-        Route::post('/sub-kategori-barang/{id}/update', 'SubKategoriBarangController@update')->name('sub-kategori-barang.update');
-        Route::get('/sub-kategori-barang/{id}/delete', 'SubKategoriBarangController@delete')->name('sub-kategori-barang.delete');
-
-        // ---SATUAN
-        Route::get('/satuan', 'SatuanController@index')->name('satuan.index');
-        Route::get('/satuan/add', 'SatuanController@create')->name('satuan.create');
-        Route::post('/satuan', 'SatuanController@store')->name('satuan.store');
-        Route::get('/satuan/{id}/edit', 'SatuanController@edit')->name('satuan.edit');
-        Route::post('/satuan/{id}/update', 'SatuanController@update')->name('satuan.update');
-        Route::get('/satuan/{id}/delete', 'SatuanController@delete')->name('satuan.delete');
 
     });
 

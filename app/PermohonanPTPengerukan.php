@@ -65,13 +65,16 @@ class PermohonanPTPengerukan extends Model
     }
 
     // --- PROSES PERMOHONAN
-    public function prosesPermohonan(){
+    public function prosesPermohonan()
+    {
 
-        if(Auth::user()->type == 'Internal'){
-            return $this->hasMany(ApprovalProcess::class, 'permohonan_id', 'id');
-        }else{
+        if (Auth::user()->type == 'Internal') {
             return $this->hasMany(ApprovalProcess::class, 'permohonan_id', 'id')
-                ->where('visible',1);
+                ->where('from_table', 'permohonan_pt_pengerukan');
+        } else {
+            return $this->hasMany(ApprovalProcess::class, 'permohonan_id', 'id')
+                ->where('from_table', 'permohonan_pt_pengerukan')
+                ->where('visible', 1);
         }
     }
 }

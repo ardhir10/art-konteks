@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\ApprovalProcess;
 use App\DocumentLibrary;
+use App\DraftRekomPertek;
+use App\FileRekomPertek;
+use App\Ksop;
+use App\LaporanSurvey;
 use App\PermohonanPTPekerjaanBawahAir;
 use App\PermohonanPTPembangunanBangunanPerairan;
 use App\PermohonanPTPengerukan;
@@ -12,6 +16,7 @@ use App\PermohonanPTTerminal;
 use App\PermohonanRTPenyelenggaraAlurPelayaran;
 use App\PermohonanRTPpSbnp;
 use App\PermohonanRTZonasiPerairan;
+use App\TindakLanjut;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +77,14 @@ class ApprovalSurveyController extends Controller
             })
             ->get();
             return view('approval-survey.review-internal',$data);
+        }elseif (Auth::user()->role->name == 'Pemohon'){
+            $data['ksop'] = Ksop::all();
+            $data['tindak_lanjut'] = TindakLanjut::where('permohonan_id',$id)
+                ->where('from_table', $data['data']->getTable())
+                ->get();
+
+
+            return view('approval-survey.tindak-lanjut-pemohon',$data);
         }else{
             return view('approval-survey.review-internal',$data);
         }
@@ -109,10 +122,24 @@ class ApprovalSurveyController extends Controller
                     $dataApproval['from_table'] = $request->permohonan_type;
                     $dataApproval['created_by_id'] = Auth::user()->id;
                     $dataApproval['updated_by_id'] = null;
+                } else if ($request->isi_disposisi == 'Draft Rekom/Pertek') {
+                    $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                    $dataApproval['permohonan_id'] = $id;
+                    $dataApproval['keterangan'] = $request->keterangan;
+                    $dataApproval['tindak_lanjut'] = $request->isi_disposisi;
+                    $dataApproval['type'] = 'APPROVAL';
+                    $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                    $dataApproval['notify_to_role'] = $request->disposisi_kepada_role;
+                    $dataApproval['status'] = 'DALAM PROSES';
+                    $dataApproval['visible'] = 1;
+                    $dataApproval['from_table'] = $request->permohonan_type;
+                    $dataApproval['created_by_id'] = Auth::user()->id;
+                    $dataApproval['updated_by_id'] = null;
                 }
 
 
             }
+
             ApprovalProcess::create($dataApproval);
             $modelPermohonan::where('id',$id)
                 ->update(['status'=>1]);
@@ -126,12 +153,21 @@ class ApprovalSurveyController extends Controller
 
     public function tindakLanjutDisposisi(Request $request, $id)
     {
-        // -- VALIDASI FILE
-        $request->validate([
-            'data_dukung.*' => 'mimes:pdf,jpg,jpeg,png',
-        ]);
 
         $tindakLanjut = $request->tindak_lanjut;
+        if ($tindakLanjut == 'Laporan Survey') {
+            // -- VALIDASI FILE
+            $request->validate([
+                'file_pendukung.*' => 'mimes:pdf',
+            ]);
+        }else{
+            // -- VALIDASI FILE
+            $request->validate([
+                'file_pendukung.*' => 'mimes:pdf,jpg,jpeg,png',
+            ]);
+        }
+
+
         $modelPermohonan = $this->filterModel($request->permohonan_type);
         try {
             DB::beginTransaction();
@@ -185,19 +221,65 @@ class ApprovalSurveyController extends Controller
                     $approvalProcess =ApprovalProcess::create($dataApproval);
 
                 }
+            }elseif($tindakLanjut == 'Laporan Survey'){
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kadisnav';
+                $dataApproval['notify_to_id'] = null;
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 1;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
 
+
+                $dataSurvey['tanggal_survey_dari'] = $request->tanggal_survey_dari;
+                $dataSurvey['tanggal_survey_sampai'] = $request->tanggal_survey_sampai;
+                $dataSurvey['approval_process_id'] = $approvalProcess->id;
+                $dataSurvey['permohonan_id'] = $id;
+                $dataSurvey['from_table'] = $request->permohonan_type;
+                $dataSurvey['keterangan'] = $request->keterangan;
+                $dataSurvey['created_by_id'] = Auth::user()->id;
+                LaporanSurvey::create($dataSurvey);
+            } elseif ($tindakLanjut == 'Draft Rekom/Pertek') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kakel Pengla';
+                $dataApproval['notify_to_id'] = null;
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 1;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
             }
 
 
 
 
 
+
             if ($request->file_pendukung) {
+
+                $last_file_ident = '_FILEPENDUKUNG';
+
+                if ($tindakLanjut == 'Laporan Survey') {
+                    $last_file_ident = '_LAPORANSURVEY';
+                }
                 foreach ($request->file_pendukung as $key => $filePendukung) {
                     // --- UPLOAD FILE
                     $file = $filePendukung;
                     // INDEX,USERID,APPROVALID,TIME,PERMOHONAN_ID
-                    $formatFilePendukung = $key.'_'.Auth::user()->id .'_'. $approvalProcess->id . '_' . time() . '_' . $id.'_'. bin2hex(random_bytes(5)) .'_FILEPENDUKUNG' ;
+                    $formatFilePendukung = $key.'_'.Auth::user()->id .'_'. $approvalProcess->id . '_' . time() . '_' . $id.'_'. bin2hex(random_bytes(5)) .$last_file_ident ;
                     // $formatFilePendukung = $this->base64url_encode($formatFilePendukung);
                     $name = $formatFilePendukung . '.' . $file->getClientOriginalExtension();
                     $destinationPath = public_path('dokumen-approval/file-pendukung/');
@@ -230,11 +312,283 @@ class ApprovalSurveyController extends Controller
         }
     }
 
+    public function tindakLanjutDraftRekomPertek(Request $request, $id)
+    {
+
+        $tindakLanjut = 'Draft Rekom/Pertek';
+        // -- VALIDASI FILE
+        $request->validate([
+            'file_draft' => 'required|mimes:pdf',
+        ]);
+
+
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+            if (Auth::user()->role->name == 'Kakel Pengla') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kabid OPS';
+                $dataApproval['status'] = 'DRAFT REKOM PERTEK ';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+            } elseif (Auth::user()->role->name == 'Kabid OPS') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kabag TU';
+                $dataApproval['status'] = 'DRAFT REKOM PERTEK ';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+            } elseif (Auth::user()->role->name == 'Kabag TU') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kadisnav';
+                $dataApproval['status'] = 'DRAFT REKOM PERTEK ';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+            }
+            $approvalProcess = ApprovalProcess::create($dataApproval);
+
+            $dataDraftRekomPertek['no_rekom'] = null;
+            $dataDraftRekomPertek['datetime'] = date('Y-m-d H:i:s');
+            $dataDraftRekomPertek['approval_id'] = $approvalProcess->id;
+            $dataDraftRekomPertek['permohonan_id'] =$id;
+            $dataDraftRekomPertek['from_table'] =$request->permohonan_type;
+            $dataDraftRekomPertek['hingga_tanggal'] = $request->hingga_Tanggal;
+            $dataDraftRekomPertek['range_waktu'] = $request->range_waktu;
+            $dataDraftRekomPertek['durasi'] = $request->durasi;
+            $dataDraftRekomPertek['keterangan'] = $request->keterangan;
+            $dataDraftRekomPertek['created_by_id'] = Auth::user()->id;
+            $dataDraftRekomPertek['created_by_role'] = Auth::user()->role->name ?? '';
+            $draftRekom= DraftRekomPertek::create($dataDraftRekomPertek);
+
+
+            if ($request->file_draft) {
+
+                $last_file_ident = '_FILEDRAFT';
+                $file = $request->file_draft;
+                // INDEX,USERID,APPROVALID,TIME,PERMOHONAN_ID
+                $formatFilePendukung = Auth::user()->id . '_' . $approvalProcess->id . '_' . time() . '_' . $id . '_' . bin2hex(random_bytes(5)) . $last_file_ident;
+                // $formatFilePendukung = $this->base64url_encode($formatFilePendukung);
+                $name = $formatFilePendukung . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('dokumen-rekom-pertek/');
+                $file->move($destinationPath, $name);
+                $dataFileDraft['file_name'] = $name;
+
+                // --- INSERT FILE
+                $dataFileDraft['original_file_name'] = $file->getClientOriginalName();
+                $dataFileDraft['approval_id'] = $approvalProcess->id;
+                $dataFileDraft['permohonan_id'] = $id;
+                $dataFileDraft['draft_rekom_pertek_id'] = $draftRekom->id;
+                $dataFileDraft['created_by_id'] = Auth::user()->id;
+                $dataFileDraft['created_by_role'] = Auth::user()->role->name ?? '';
+                $dataFileDraft['datetime'] = date('Y-m-d H:i:s');
+                $dataFileDraft['permohonan_type'] = $request->permohonan_type;
+                $dataFileDraft['keterangan'] = $request->keterangan;
+
+                $fileRekom = FileRekomPertek::create($dataFileDraft);
+
+            }
+
+
+            $modelPermohonan::where('id', $id)
+                ->update(['status' => 1]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+
+    public function tindakLanjutRilisDraftRekomPertek(Request $request, $id)
+    {
+        $tindakLanjut = 'Draft Rekom/Pertek';
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = $tindakLanjut;
+            $dataApproval['type'] = 'APPROVAL';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+            $dataApproval['status'] = 'DOKUMEN TERBIT';
+            $dataApproval['visible'] = 0;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+
+            $approvalProcess = ApprovalProcess::create($dataApproval);
+
+            $dataDraftRekomPertek['no_rekom'] = '001';
+            $dataDraftRekomPertek['datetime'] = date('Y-m-d H:i:s');
+            $dataDraftRekomPertek['approval_id'] = $approvalProcess->id;
+            $dataDraftRekomPertek['permohonan_id'] =$id;
+            $dataDraftRekomPertek['from_table'] =$request->permohonan_type;
+
+            $dataDraftRekomPertek['hingga_tanggal'] = $request->tanggal_rilis;
+            $dataDraftRekomPertek['range_waktu'] = $request->range_waktu;
+            $dataDraftRekomPertek['durasi'] = $request->durasi;
+            $dataDraftRekomPertek['keterangan'] = $request->keterangan;
+            $dataDraftRekomPertek['created_by_id'] = Auth::user()->id;
+            $dataDraftRekomPertek['created_by_role'] = Auth::user()->role->name ?? '';
+            $dataDraftRekomPertek['tanggal_rilis'] = $request->tanggal_rilis;
+
+            $draftRekom= DraftRekomPertek::create($dataDraftRekomPertek);
+
+
+
+            // --- CARI FILE FINAL DARI KABAG TU
+            $fileFinal = FileRekomPertek::where('permohonan_id',$id)
+                ->where('permohonan_type', $request->permohonan_type)
+                ->where('created_by_role', 'Kabag TU')
+                ->orderBy('id','desc')
+                ->first();
+
+
+
+            // --- INSERT FILE RILIS
+            $dataFileDraft['file_name'] = $fileFinal->file_name;
+            $dataFileDraft['original_file_name'] = $fileFinal->original_file_name;
+            $dataFileDraft['approval_id'] = $approvalProcess->id;
+            $dataFileDraft['permohonan_id'] = $id;
+            $dataFileDraft['draft_rekom_pertek_id'] = $fileFinal->draft_rekom_pertek_id;
+
+            $dataFileDraft['created_by_id'] = Auth::user()->id;
+            $dataFileDraft['created_by_role'] = 'Kadisnav' ?? '';
+            $dataFileDraft['datetime'] = date('Y-m-d H:i:s');
+            $dataFileDraft['permohonan_type'] = $request->permohonan_type;
+            $dataFileDraft['keterangan'] = $request->keterangan;
+
+            $fileRekom = FileRekomPertek::create($dataFileDraft);
+
+
+
+            $modelPermohonan::where('id', $id)
+                ->update(['status' => 2]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil di Release !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+
+    public function tindakLanjutPenomoran(Request $request, $id)
+    {
+        $tindakLanjut = 'Draft Rekom/Pertek';
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = $tindakLanjut;
+            $dataApproval['type'] = 'APPROVAL';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Pemohon';
+            $dataApproval['notify_to_id'] = $modelPermohonan::first()->pemohon_id;
+            $dataApproval['status'] = 'DOKUMEN TERBIT';
+            $dataApproval['visible'] = 1;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+            $approvalProcess = ApprovalProcess::create($dataApproval);
+
+            $dataDraftRekomPertek['no_rekom'] = '001';
+            $dataDraftRekomPertek['datetime'] = date('Y-m-d H:i:s');
+            $dataDraftRekomPertek['approval_id'] = $approvalProcess->id;
+            $dataDraftRekomPertek['permohonan_id'] = $id;
+            $dataDraftRekomPertek['from_table'] = $request->permohonan_type;
+
+            $dataDraftRekomPertek['hingga_tanggal'] = $request->tanggal_rilis;
+            $dataDraftRekomPertek['range_waktu'] = $request->range_waktu;
+            $dataDraftRekomPertek['durasi'] = $request->durasi;
+            $dataDraftRekomPertek['keterangan'] = $request->keterangan;
+            $dataDraftRekomPertek['created_by_id'] = Auth::user()->id;
+            $dataDraftRekomPertek['created_by_role'] = Auth::user()->role->name ?? '';
+            $dataDraftRekomPertek['tanggal_rilis'] = $request->tanggal_rilis;
+            $draftRekom = DraftRekomPertek::create($dataDraftRekomPertek);
+
+
+
+            // --- Upload File Dengan Penomoran
+            if ($request->file_draft) {
+                $last_file_ident = '_FILEDRAFT';
+                $file = $request->file_draft;
+                // INDEX,USERID,APPROVALID,TIME,PERMOHONAN_ID
+                $formatFilePendukung = Auth::user()->id . '_' . $approvalProcess->id . '_' . time() . '_' . $id . '_' . bin2hex(random_bytes(5)) . $last_file_ident;
+                // $formatFilePendukung = $this->base64url_encode($formatFilePendukung);
+                $name = $formatFilePendukung . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('dokumen-rekom-pertek/');
+                $file->move($destinationPath, $name);
+                $dataFileDraft['file_name'] = $name;
+
+                // --- INSERT FILE
+                $dataFileDraft['original_file_name'] = $file->getClientOriginalName();
+                $dataFileDraft['approval_id'] = $approvalProcess->id;
+                $dataFileDraft['permohonan_id'] = $id;
+                $dataFileDraft['draft_rekom_pertek_id'] = $draftRekom->id;
+                $dataFileDraft['created_by_id'] = Auth::user()->id;
+                $dataFileDraft['created_by_role'] = Auth::user()->role->name ?? '';
+                $dataFileDraft['datetime'] = date('Y-m-d H:i:s');
+                $dataFileDraft['permohonan_type'] = $request->permohonan_type;
+                $dataFileDraft['keterangan'] = $request->keterangan;
+
+                $fileRekom = FileRekomPertek::create($dataFileDraft);
+            }
+
+
+
+            $modelPermohonan::where('id', $id)
+                ->update(['status' => 2]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil di Release !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+
 
 
     private function filterModel($table){
         if($table == 'permohonan_pt_pengerukan'){
             return PermohonanPTPengerukan::class;
+        }elseif($table== 'permohonan_pt_reklamasi'){
+            return PermohonanPTReklamasi::class;
+        } elseif ($table == 'permohonan_pt_pba') {
+            return PermohonanPTPekerjaanBawahAir::class;
+        } elseif ($table == 'permohonan_pt_pbp') {
+            return PermohonanPTPembangunanBangunanPerairan::class;
+        } elseif ($table == 'permohonan_pt_terminal') {
+            return PermohonanPTTerminal::class;
+        } elseif ($table == 'permohonan_rt_pap') {
+            return PermohonanRTPenyelenggaraAlurPelayaran::class;
+        } elseif ($table == 'permohonan_rt_ppsbnp') {
+            return PermohonanRTPpSbnp::class;
+        } elseif ($table == 'permohonan_rt_zonasi_perairan') {
+            return PermohonanRTZonasiPerairan::class;
         }
     }
 
@@ -250,31 +604,93 @@ class ApprovalSurveyController extends Controller
             $data['surat_permohonan_file'] =asset('dokumen-permohonan/permohonan-teknis/pengerukan/sp/', $row->surat_permohonan);
 
         }elseif ($type == 'REKLAMASI') {
-            # code...
+            $row = PermohonanPTReklamasi::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PERMOHONAN REKLAMASI';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/reklamasi/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'TERMINALUMUM') {
-            # code...
+            $row = PermohonanPTTerminal::where('id', $id)
+            ->with(['prosesPermohonan' => function ($q) {
+                $q->orderBy('id', 'asc');
+            }])
+                ->first();
+            $data['page_title'] = 'PERMOHONAN TERMINAL UMUM';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/terminal/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'TERMINALKHUSUS') {
-            # code...
+            $row = PermohonanPTTerminal::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PERMOHONAN TERMINAL KHUSUS';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/terminal/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'TERMINALUKS') {
-            # code...
+            $row = PermohonanPTTerminal::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PERMOHONAN TERMINAL UKS';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/terminal/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'PEKERJAANBAWAHAIR') {
-            # code...
+            $row = PermohonanPTPekerjaanBawahAir::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = $row->jenis_pekerjaan;
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/pba/sp/', $row->surat_permohonan);
         }
-        elseif ($type == 'PERMBANGUNANBANGUNANPERAIRAN') {
-            # code...
+        elseif ($type == 'PEMBANGUNANBANGUNANPERAIRAN') {
+            $row = PermohonanPTPembangunanBangunanPerairan::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PEMBANGUNAN BANGUNAN PERAIRAN';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/pbp/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'PENYELENGGARAALURPELAYARAN') {
-            # code...
+            $row = PermohonanRTPenyelenggaraAlurPelayaran::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PENYELENGGARA ALUR PELAYARAN';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/pap/sp/', $row->surat_permohonan);
         }
         elseif ($type == 'PEMBANGUNANSBNP') {
-            # code...
-        }
-        elseif ($type == 'ZONASIPERAIRAN') {
-            # code...
+            $row = PermohonanRTPpSbnp::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'PEMBANGUNAN SBNP';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/ppsbnp/sp/', $row->surat_permohonan);
+        }elseif ($type == 'ZONASIPERAIRAN') {
+            $row = PermohonanRTZonasiPerairan::where('id', $id)
+                ->with(['prosesPermohonan' => function ($q) {
+                    $q->orderBy('id', 'asc');
+                }])
+                ->first();
+            $data['page_title'] = 'ZONASI PERAIRAN';
+            $data['data'] = $row;
+            $data['surat_permohonan_file'] = asset('dokumen-permohonan/permohonan-teknis/not-avilabelsp/', $row->surat_permohonan);
         }
 
 

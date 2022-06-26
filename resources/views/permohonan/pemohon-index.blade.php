@@ -328,10 +328,22 @@
                                     <td>{{'Pertimbangan Teknis'}}</td>
                                 @endif
                                 <td>
-                                    <div class="avatar-sm me-1">
-                                        <div class="avatar-title bg-warning rounded-circle ">
+                                     @if ($item->status == 2)
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-success rounded-circle ">
+                                            </div>
                                         </div>
-                                    </div>
+                                    @elseif ($item->status == 3)
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-dark rounded-circle ">
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-warning rounded-circle ">
+                                            </div>
+                                        </div>
+                                    @endif
                                 </td>
 
                         </tr>

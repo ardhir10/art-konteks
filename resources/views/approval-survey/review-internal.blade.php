@@ -87,6 +87,15 @@
                                     @if ($data->isNotify($data->id,$data->getTable(),Auth::user()->role->name ?? null))
                                         <button class="btn btn-lg btn-danger w-100 " data-bs-toggle="modal" data-bs-target="#myModal">TINDAK LANJUT</button>
                                         <span class="d-block">Untuk melanjutkan proses terhadap permohonan ini Anda harus menekan button TINDAK LANJUT di atas.</span>
+                                    @else
+                                       @if ($data->status == 2)
+                                            <p class="text-success fs-4">DOKUMEN TERBIT</p>
+                                        @elseif ($data->status == 3)
+                                            <p class="text-dark fs-4">SELESAI</p>
+                                        @else
+                                            <p class="text-warning fs-4">DALAM PROSES</p>
+                                        @endif
+                                        <p></p>
                                     @endif
 
 
@@ -154,16 +163,43 @@
 
 
 @push('modals')
+    @include('approval-survey.component.detail-perusahaan')
+
     @if (Auth::user()->role->name == 'Kadisnav')
         @include('approval-survey.component.tindak-lanjut-kadisnav')
     @elseif (Auth::user()->role->name == 'Kabid OPS')
         @include('approval-survey.component.tindak-lanjut-kabidops')
     @elseif (Auth::user()->role->name == 'Kakel Pengla')
         @include('approval-survey.component.tindak-lanjut-kakelpengla')
+    @elseif (Auth::user()->role->name == 'Surveyor Pengla')
+        @include('approval-survey.component.tindak-lanjut-surveyorpengla')
+    @elseif (Auth::user()->role->name == 'Kabag TU')
+        @include('approval-survey.component.tindak-lanjut-kabagtu')
+    @elseif (Auth::user()->role->name == 'Staff Tata Usaha')
+        @include('approval-survey.component.tindak-lanjut-stafftu')
     @endif
 
-    @include('approval-survey.component.detail-perusahaan')
-    @include('approval-survey.component.detail-permohonan-pengerukan')
+    @if (Request::get('type') == 'REKLAMASI')
+        @include('approval-survey.component.detail-permohonan-reklamasi')
+    @elseif (Request::get('type') == 'PENGERUKAN')
+        @include('approval-survey.component.detail-permohonan-pengerukan')
+    @elseif (Request::get('type') == 'PEMBANGUNANBANGUNANPERAIRAN')
+        @include('approval-survey.component.detail-permohonan-pbp')
+    @elseif(Request::get('type')=='TERMINALUMUM')
+        @include('approval-survey.component.detail-permohonan-terminal-umum')
+        @elseif(Request::get('type')=='TERMINALKHUSUS')
+        @include('approval-survey.component.detail-permohonan-terminal-khusus')
+    @elseif(Request::get('type')=='TERMINALUKS')
+        @include('approval-survey.component.detail-permohonan-tuks')
+    @elseif(Request::get('type')=='PEKERJAANBAWAHAIR')
+        @include('approval-survey.component.detail-permohonan-pba')
+    @elseif(Request::get('type')=='PENYELENGGARAALURPELAYARAN')
+        @include('approval-survey.component.detail-permohonan-pap')
+    @elseif(Request::get('type')=='PEMBANGUNANSBNP')
+        @include('approval-survey.component.detail-permohonan-sbnp')
+    @elseif(Request::get('type')=='ZONASIPERAIRAN')
+        @include('approval-survey.component.detail-permohonan-zona-perairan')
+    @endif
 @endpush
 
 @push('scripts')

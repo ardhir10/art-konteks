@@ -186,7 +186,7 @@
                             @elseif ($item->getTable() == 'permohonan_pt_pba')
                                 <tr class='clickable-row' data-href='{{route('approval-survey.review',['id'=>$item->id,'type'=> 'PEKERJAANBAWAHAIR'])}}'>
                             @elseif ($item->getTable() == 'permohonan_pt_pbp')
-                                <tr class='clickable-row' data-href='{{route('approval-survey.review',['id'=>$item->id,'type'=> 'PERMBANGUNANBANGUNANPERAIRAN'])}}'>
+                                <tr class='clickable-row' data-href='{{route('approval-survey.review',['id'=>$item->id,'type'=> 'PEMBANGUNANBANGUNANPERAIRAN'])}}'>
                             @elseif ($item->getTable() == 'permohonan_rt_pap')
                                 <tr class='clickable-row' data-href='{{route('approval-survey.review',['id'=>$item->id,'type'=> 'PENYELENGGARAALURPELAYARAN'])}}'>
                             @elseif ($item->getTable() == 'permohonan_rt_ppsbnp')
@@ -215,10 +215,23 @@
                                     <td>{{'Pertimbangan Teknis'}}</td>
                                 @endif
                                 <td>
-                                    <div class="avatar-sm me-1">
-                                        <div class="avatar-title bg-warning rounded-circle ">
+                                    @if ($item->status == 2)
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-success rounded-circle ">
+                                            </div>
                                         </div>
-                                    </div>
+                                    @elseif ($item->status == 3)
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-dark rounded-circle ">
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-warning rounded-circle ">
+                                            </div>
+                                        </div>
+                                    @endif
+
                                 </td>
 
                         </tr>
