@@ -24,7 +24,7 @@
                                     <p class=" mb-0">
                                         {{date('d F Y',strtotime($proses_permohonan->created_at))}} ||
                                         {{date('H:i',strtotime($proses_permohonan->created_at))}}</p>
-                                    @if (
+                                        @if (
                                             $proses_permohonan->tindak_lanjut == 'Harap Menjelaskan' ||
                                             $proses_permohonan->tindak_lanjut== 'Lakukan Survey Lapangan'
                                             )
@@ -37,15 +37,36 @@
                                             @elseif($proses_permohonan->status == 'DOKUMEN TERBIT')
                                                 <span class="d-block">{{$proses_permohonan->notify_from_role}} telah merilis Dokumen Rekomendasi/Pertimbangan Teknis pada <b>{{$proses_permohonan->draftRekom->tanggal_rilis}}</b></span>
                                             @endif
-                                        @else
+                                        @elseif($proses_permohonan->tindak_lanjut == 'Rapat Internal')
+                                            @if ($proses_permohonan->notify_from_role == 'Kadisnav')
+                                                <span class="d-block">{{$proses_permohonan->notify_from_role}} meminta rapat internal {{$proses_permohonan->notify_to_role}}</span>
+                                            @endif
 
+                                            @if ($proses_permohonan->type == 'UNDANGAN RAPAT')
+                                                <span class="d-block">UNDANGAN RAPAT</span>
+                                            @endif
+                                            @if ($proses_permohonan->type == 'LAPORAN RAPAT')
+                                                <span class="d-block">LAPORAN RAPAT</span>
+                                            @endif
                                         @endif
+
                                         @if ($proses_permohonan->status != 'DOKUMEN TERBIT')
-                                            <div class="mb-2">
-                                                <span class="d-block fw-bold mb-2">{{$proses_permohonan->tindak_lanjut}}</span>
-                                                <span class="d-block ">Keterangan :</span>
-                                                <span class="d-block fw-bold ">{{$proses_permohonan->keterangan}}</span>
-                                            </div>
+
+                                            @if ($proses_permohonan->type == 'LAPORAN RAPAT')
+                                                 <div class="mb-2">
+                                                    <span class="d-block fw-bold mb-2">{{$proses_permohonan->tindak_lanjut}}</span>
+                                                    <span class="d-block ">Laporan Rapat :</span>
+                                                    <span class="d-block fw-bold ">{{$proses_permohonan->laporanRapat->last()->ringkasan_rapat}}</span>
+                                                </div>
+                                            @else
+                                                <div class="mb-2">
+                                                    <span class="d-block fw-bold mb-2">{{$proses_permohonan->tindak_lanjut}}</span>
+                                                    <span class="d-block ">Keterangan :</span>
+                                                    <span class="d-block fw-bold ">{{$proses_permohonan->keterangan}}</span>
+                                                </div>
+                                            @endif
+
+
 
                                             @if ($proses_permohonan->draftRekom )
                                                 <span class="d-block ">Tanggal Berlaku :</span>
@@ -59,6 +80,64 @@
                                             @endif
                                         @endif
 
+                                        @if ($proses_permohonan->type == 'UNDANGAN RAPAT')
+                                            <div class="row mt-3">
+                                                <div class="col-lg-12">
+                                                    <h5 class="text-white">UNDANGAN RAPAT :</h5>
+                                                    <table class="table text-white table-sm table-bordered">
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Perihal</th>
+                                                            <th>Tanggal Rapat</th>
+                                                            <th>Jam Rapat</th>
+                                                            <th>Durasi</th>
+                                                            <th>Download</th>
+                                                        </tr>
+                                                        @foreach ($proses_permohonan->undanganRapat as $undanganRapat)
+                                                        <tr>
+                                                            <td>{{$loop->iteration}}</td>
+                                                            <td>{{$undanganRapat->perihal_rapat}}</td>
+                                                            <td>{{$undanganRapat->tanggal_rapat}}</td>
+                                                            <td>{{$undanganRapat->jam_rapat}}</td>
+                                                            <td>{{$undanganRapat->durasi_rapat}}</td>
+                                                            <td>
+                                                                <a href="{{asset('dokumen-rekom-pertek/undangan-rapat/'.$undanganRapat->file_name)}}"  target="_blank">
+                                                                        <button class="btn btn-sm btn-success">Download</button>
+                                                                    </a>
+                                                            </td>
+
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        @if ($proses_permohonan->type == 'LAPORAN RAPAT')
+                                            <div class="row mt-3">
+                                                <div class="col-lg-12">
+                                                    <h5 class="text-white">HASIL LAPORAN RAPAT :</h5>
+                                                    <table class="table text-white table-sm table-bordered">
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Ringkasan Hasil Rapat</th>
+                                                            <th>Download</th>
+                                                        </tr>
+                                                        @foreach ($proses_permohonan->laporanRapat as $laporanRapat)
+                                                        <tr>
+                                                            <td>{{$loop->iteration}}</td>
+                                                            <td>{{$laporanRapat->ringkasan_rapat}}</td>
+                                                            <td>
+                                                                <a href="{{asset('dokumen-rekom-pertek/laporan-rapat/'.$laporanRapat->file_name)}}"  target="_blank">
+                                                                        <button class="btn btn-sm btn-success">Download</button>
+                                                                    </a>
+                                                            </td>
+
+                                                        </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        @endif
 
                                         @if (count($proses_permohonan->documents))
                                             <div class="row mt-3">
@@ -88,6 +167,7 @@
                                                 </div>
                                             </div>
                                         @endif
+
                                         @if (count($proses_permohonan->fileRekomPertek))
                                             <div class="row mt-3">
                                                 <div class="col-lg-12">

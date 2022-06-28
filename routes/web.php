@@ -95,6 +95,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/approval-survey/tindak-lanjut/rilis-draft-rekom-pertek/{id}', 'ApprovalSurveyController@tindakLanjutRilisDraftRekomPertek')->name('approval-survey.tindak-lanjut.rilis-draft-rekom-pertek');
     Route::post('/approval-survey/tindak-lanjut/penomoran-draft-rekom-pertek/{id}', 'ApprovalSurveyController@tindakLanjutPenomoran')->name('approval-survey.tindak-lanjut.penomoran-draft-rekom-pertek');
 
+    // --- RAPAT INTERNAL KABAGTU LANJUTKAN INTERNAL
+    Route::post('/approval-survey/tindak-lanjut/kabagtu-lanjutkan-internal/{id}', 'ApprovalSurveyController@kabagTULanjutkan')->name('approval-survey.tindak-lanjut.kabagtu-lanjutkan-internal');
+
+    // --- RAPAT INTERNAL CREATE UNDANGAN STAFF TU
+    Route::post('/approval-survey/tindak-lanjut/stafftu-create-undangan/{id}', 'ApprovalSurveyController@staffTuCreateUndangan')->name('approval-survey.tindak-lanjut.stafftu-create-undangan');
+    // --- RAPAT INTERNAL LAPORAN UNDANGAN STAFF TU
+    Route::post('/approval-survey/tindak-lanjut/stafftu-laporan-undangan/{id}', 'ApprovalSurveyController@staffTuLaporanUndangan')->name('approval-survey.tindak-lanjut.stafftu-laporan-undangan');
+
     // --- TINDAK LANJUT REKOMENDASI KSOP
     Route::post('/tindak-lanjut/rekomendasi-ksop/{id}', 'TindakLanjutController@rekomendasiKsop')->name('approval-survey.tindak-lanjut.pemohon-rekomendasi-ksop');
     Route::post('/tindak-lanjut/pemohon-pembangunan-pelaksanaan/{id}', 'TindakLanjutController@pembangunanPelaksanaan')->name('approval-survey.tindak-lanjut.pemohon-pembangunan-pelaksanaan');

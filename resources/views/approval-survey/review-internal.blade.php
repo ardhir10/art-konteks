@@ -177,6 +177,8 @@
         @include('approval-survey.component.tindak-lanjut-kabagtu')
     @elseif (Auth::user()->role->name == 'Staff Tata Usaha')
         @include('approval-survey.component.tindak-lanjut-stafftu')
+    @elseif (Auth::user()->role->name == 'Kabag TU')
+        @include('approval-survey.component.tindak-lanjut-stafftu')
     @endif
 
     @if (Request::get('type') == 'REKLAMASI')

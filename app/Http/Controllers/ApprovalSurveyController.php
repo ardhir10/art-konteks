@@ -7,6 +7,7 @@ use App\DocumentLibrary;
 use App\DraftRekomPertek;
 use App\FileRekomPertek;
 use App\Ksop;
+use App\LaporanRapat;
 use App\LaporanSurvey;
 use App\PermohonanPTPekerjaanBawahAir;
 use App\PermohonanPTPembangunanBangunanPerairan;
@@ -17,6 +18,7 @@ use App\PermohonanRTPenyelenggaraAlurPelayaran;
 use App\PermohonanRTPpSbnp;
 use App\PermohonanRTZonasiPerairan;
 use App\TindakLanjut;
+use App\UndanganRapat;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -136,8 +138,19 @@ class ApprovalSurveyController extends Controller
                     $dataApproval['created_by_id'] = Auth::user()->id;
                     $dataApproval['updated_by_id'] = null;
                 }
-
-
+            }elseif($tindakLanjut == 'Rapat Internal'){
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kabag TU';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
             }
 
             ApprovalProcess::create($dataApproval);
@@ -589,6 +602,166 @@ class ApprovalSurveyController extends Controller
             return PermohonanRTPpSbnp::class;
         } elseif ($table == 'permohonan_rt_zonasi_perairan') {
             return PermohonanRTZonasiPerairan::class;
+        }
+    }
+
+    public function kabagTULanjutkan(Request $request, $id)
+    {
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = 'Rapat Internal';
+            $dataApproval['type'] = 'APPROVAL';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+            $dataApproval['status'] = 'DALAM PROSES';
+            $dataApproval['visible'] = 0;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+
+
+            ApprovalProcess::create($dataApproval);
+            $modelPermohonan::where('id', $id)
+            ->update(['status' => 1]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+
+
+    public function staffTuCreateUndangan(Request $request, $id)
+    {
+
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = 'Rapat Internal';
+            $dataApproval['type'] = 'UNDANGAN RAPAT';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+            $dataApproval['status'] = 'DALAM PROSES';
+            $dataApproval['visible'] = 0;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+            $approvalProcess = ApprovalProcess::create($dataApproval);
+
+
+
+            // -- DATA UNDANGAN RAPAT
+            $undanganRapat['tanggal_rapat'] = $request->tanggal_rapat;
+            $undanganRapat['perihal_rapat'] = $request->perihal_rapat;
+            $undanganRapat['jam_rapat'] = $request->jam_rapat;
+            $undanganRapat['durasi_rapat'] = $request->durasi_rapat;
+            $undanganRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
+            $undanganRapat['approval_process_id'] = $approvalProcess->id;
+            $undanganRapat['permohonan_id'] = $id;
+            $undanganRapat['from_table'] = $request->permohonan_type;
+            $undanganRapat['keterangan'] = $request->keterangan;
+            $undanganRapat['created_by_id'] = Auth::user()->id;
+
+            if ($request->file_udangan_rapat) {
+
+                $last_file_ident = '_UNDANGANRAPAT';
+                $file = $request->file_udangan_rapat;
+                // INDEX,USERID,APPROVALID,TIME,PERMOHONAN_ID
+                $formatFilePendukung = Auth::user()->id . '_' . $approvalProcess->id . '_' . time() . '_' . $id . '_' . bin2hex(random_bytes(5)) . $last_file_ident;
+                // $formatFilePendukung = $this->base64url_encode($formatFilePendukung);
+                $name = $formatFilePendukung . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('dokumen-rekom-pertek/undangan-rapat/');
+                $file->move($destinationPath, $name);
+                $undanganRapat['file_name'] = $name;
+                $undanganRapat['original_file_name'] = $file->getClientOriginalName();
+
+            }
+            UndanganRapat::create($undanganRapat);
+
+            $modelPermohonan::where('id', $id)
+            ->update(['status' => 1]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+    public function staffTuLaporanUndangan(Request $request, $id)
+    {
+
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = 'Rapat Internal';
+            $dataApproval['type'] = 'LAPORAN RAPAT';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Kadisnav';
+            $dataApproval['status'] = 'DALAM PROSES';
+            $dataApproval['visible'] = 0;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+            $approvalProcess = ApprovalProcess::create($dataApproval);
+
+
+
+            // -- DATA LAPORAN RAPAT
+            //  $modelPermohonan::where('id', $id)
+            // dd($modelPermohonan::wherefirst());
+
+            $laporanRapat['ringkasan_rapat'] = $request->ringkasan_rapat;
+            $laporanRapat['original_file_name'] = $request->original_file_name;
+            $laporanRapat['file_name'] = $request->file_name;
+            $laporanRapat['undangan_rapat_id'] = null;
+            $laporanRapat['approval_process_id'] = $approvalProcess->id;
+            $laporanRapat['permohonan_id'] = $id;
+            $laporanRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
+            $laporanRapat['from_table'] = $request->permohonan_type;
+            $laporanRapat['keterangan'] = $request->keterangan;
+            $laporanRapat['created_by_id'] = Auth::user()->id;
+
+
+
+
+            if ($request->file_laporan_rapat) {
+
+                $last_file_ident = '_laporan_rapat';
+                $file = $request->file_laporan_rapat;
+                // INDEX,USERID,APPROVALID,TIME,PERMOHONAN_ID
+                $formatFilePendukung = Auth::user()->id . '_' . $approvalProcess->id . '_' . time() . '_' . $id . '_' . bin2hex(random_bytes(5)) . $last_file_ident;
+                // $formatFilePendukung = $this->base64url_encode($formatFilePendukung);
+                $name = $formatFilePendukung . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('dokumen-rekom-pertek/laporan-rapat/');
+                $file->move($destinationPath, $name);
+                $laporanRapat['file_name'] = $name;
+                $laporanRapat['original_file_name'] = $file->getClientOriginalName();
+
+            }
+
+            LaporanRapat::create($laporanRapat);
+
+            $modelPermohonan::where('id', $id)
+            ->update(['status' => 1]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
         }
     }
 
