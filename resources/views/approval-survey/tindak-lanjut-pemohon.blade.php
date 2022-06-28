@@ -7,6 +7,15 @@
 <!-- swiper css -->
 <link rel="stylesheet" href="{{asset('assets/libs/swiper/swiper-bundle.min.css')}}">
 <style>
+    .item-dokumen{
+        border: 1px solid;
+        padding: 5px;
+        border-radius: 10px;
+    }
+
+    .nowrap{
+        white-space: nowrap !important;
+    }
     .bg-ditolak {
         background: #ED1F24 !important;
     }
@@ -178,12 +187,16 @@
                         </div>
 
 
-
                         @if (count($data->prosesPermohonan))
                             @if (count($data->prosesPermohonan->last()->tindakLanjut))
                                 {{-- DETAIL TINDAK LANJUT --}}
-                                @include('approval-survey.component.proses-tindak-lanjut')
+                                @if ($data->prosesPermohonan->last()->typePermohonan() == 'PERTIMBANGAN TEKNIS')
+                                    @include('approval-survey.component.proses-tindak-lanjut')
+                                @else
+                                    @include('approval-survey.component.proses-tindak-lanjut-rekom')
+                                @endif
                             @endif
+
                             @if (count($data->prosesPermohonan->last()->laporanPp))
                                 {{-- DETAIL LAPORAN PP --}}
                                 @include('approval-survey.component.proses-tindak-laporan-pp')
@@ -303,6 +316,48 @@
         window.location = $(this).data("href");
     });
 
+    function removeBtn(e){
+        e.parentNode.parentNode.remove()
+    }
+    $('#tambahDokumen').on('click',function(){
+        var itemKordinat = `
+        <div class="item-dokumen shadow-lg d-flex mb-3">
+            <div class="" style="width: 95%">
+                <div class="p-1">
+                    <div class="row mb-2 mt-2 ">
+                        <div class="col-lg-12 mb-1">
+                            <span for="" class="d-block">Nama Dokumen </span>
+                            <div class="input-group">
+                                <input type="text" name="nama_dokumen[]" class="form-control form-control-sm" id=""  placeholder="Nama Dokumen">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <span for="" class="d-block">Tangal Terbit </span>
+                            <div class="input-group">
+                                <input type="date" name="tanggal_terbit_pendukung[]" class="form-control form-control-sm" id=""  placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <span for="" class="d-block nowrap">Instansi Penerbit </span>
+                            <div class="input-group">
+                                <input type="text" name="instansi_penerbit[]" class="form-control form-control-sm" id=""  placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <span for="" class="d-block">File </span>
+                            <div class="input-group">
+                                <input type="file" name="file_pendukung[]" class="form-control form-control-sm" id=""  placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="" style="width: 5%">
+                <button class="btn btn-sm btn-outline-danger ms-1 float-end remove-btn" onclick="removeBtn(this)" type="button">X</button>
+            </div>
+        </div>`;
+        $('.list-dokumen').append(itemKordinat);
+    });
 
 
 </script>

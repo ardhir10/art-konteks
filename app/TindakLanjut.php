@@ -14,6 +14,15 @@ class TindakLanjut extends Model
     {
         return $this->belongsTo(Ksop::class, 'penerbit_id', 'id');
     }
+    public function filePendukung()
+    {
+        return $this->belongsTo(Ksop::class, 'penerbit_id', 'id');
+    }
+
+    public function approval()
+    {
+        return $this->hasOne(ApprovalProcess::class, 'id', 'approval_process_id');
+    }
 
     public function pembangunanPelaksanaan()
     {

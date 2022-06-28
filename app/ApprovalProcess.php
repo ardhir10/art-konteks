@@ -24,6 +24,10 @@ class ApprovalProcess extends Model
     {
         return $this->hasMany(FileRekomPertek::class, 'approval_id', 'id');
     }
+    public function filePembangunanPelaksanaan()
+    {
+        return $this->hasMany(FilePembangunanPelaksanaan::class, 'approval_process_id', 'id');
+    }
     public function tindakLanjut()
     {
         return $this->hasMany(TindakLanjut::class, 'permohonan_id', 'permohonan_id')->where('from_table',$this->from_table);

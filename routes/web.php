@@ -100,6 +100,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tindak-lanjut/pemohon-pembangunan-pelaksanaan/{id}', 'TindakLanjutController@pembangunanPelaksanaan')->name('approval-survey.tindak-lanjut.pemohon-pembangunan-pelaksanaan');
     Route::post('/tindak-lanjut/pemohon-pembangunan-penyelesaian/{id}', 'TindakLanjutController@pembangunanPenyelesaian')->name('approval-survey.tindak-lanjut.pemohon-pembangunan-penyelesaian');
 
+    Route::post('/tindak-lanjut/tindak-lanjut-izin-kantor-pusat/{id}', 'TindakLanjutController@izinPembangunanKantorPusat')->name('approval-survey.tindak-lanjut.pemohon-izin-pembangunan-kantor-pusat');
 
 
     // --- MASTER DATA
