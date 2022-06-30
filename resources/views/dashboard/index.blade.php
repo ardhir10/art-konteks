@@ -126,11 +126,11 @@
     }
 
     .bg-card-dashboard{
-        background: #C0F4DE !important;
+        background: #8f46601c !important;
     }
 
     .text-dashboard{
-        color: #0D6749 !important;
+        color: #9C1B49 !important;
     }
 </style>
 
@@ -139,7 +139,81 @@
 
 @section('content')
 <div class="page-content">
-    <div class="container-fluid p-0">
+    <div class="container-fluid ">
+        <h3 class="  d-block">Welcome , {{Auth::user()->name}}</h3>
+        <h5>{{date('Y-m-d')}}</h5>
+        <div class="row mt-4">
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">Total PERTEK Rilis</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$total_pertek}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">Total REKOM Rilis</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$total_rekom}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">PERTEK On Progress</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$pretek_on_progress}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">REKOM On Progress</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$rekom_on_progress}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">Kepatuhan Tindak Lanjut</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$total_pertek}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-card-dashboard text-dashboard" style="border:1px solid;">
+                    <div class="card-body p-3">
+                        <div class="d-block ">
+                            <h5 class="text-dashboard fw-bolder">Tindak Lanjut On Progress</h5>
+                            <span style="font-size: 10vh ;font-weight:bold;" id="">{{$total_pertek}}</span>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

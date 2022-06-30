@@ -178,49 +178,7 @@
                     <hr>
                     @include('components.flash-message')
                     <div class="row mb-3">
-                        <div class="col-lg-6">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-warning rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Dalam Proses</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-success rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Dokumen Terbit</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-danger rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Ditolak</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-dark rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Selesai Tindak Lanjut</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
@@ -273,6 +231,49 @@
                             </div>
 
                         </div>
+                        <div class="col-lg-12 mt-3">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex pb-1 ">
+                                            <div class="avatar-sm me-1">
+                                                <div class="avatar-title bg-warning rounded-circle ">
+                                                </div>
+                                            </div>
+                                            <span class="mt-1 ">Dalam Proses</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex pb-1 ps-4">
+                                            <div class="avatar-sm me-1">
+                                                <div class="avatar-title bg-success rounded-circle ">
+                                                </div>
+                                            </div>
+                                            <span class="mt-1 ">Dokumen Terbit</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex pb-1 ps-4">
+                                            <div class="avatar-sm me-1">
+                                                <div class="avatar-title bg-danger rounded-circle ">
+                                                </div>
+                                            </div>
+                                            <span class="mt-1 ">Ditolak</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex pb-1 ps-4">
+                                            <div class="avatar-sm me-1">
+                                                <div class="avatar-title bg-dark rounded-circle ">
+                                                </div>
+                                            </div>
+                                            <span class="mt-1 ">Selesai Tindak Lanjut</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
                 <table class="table-striped datatables" id="data-table" style="font-size: 16px">

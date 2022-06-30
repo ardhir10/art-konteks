@@ -21,7 +21,7 @@
                     </button>
                 </div>
 
-                <div class="dropdown d-inline-block">
+                <div class="dropdown d-inline-block" >
                     <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -43,8 +43,8 @@
                             </span>
                         </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-end pt-0">
-                        <div class="p-3 bg-primary border-bottom">
+                    <div class="dropdown-menu dropdown-menu-end pt-0" style="border-radius: 10px;">
+                        <div class="p-3 bg-konteks border-bottom" style="border-top-left-radius:10px;border-top-right-radius:10px;">
                             <h6 class="mb-0 text-white">{{Auth::user()->name ?? ''}}</h6>
                             <h6 class="mb-0 text-white"></h6>
                             <p class="mb-0 font-size-11 text-white-50 fw-semibold">{{Auth::user()->email ?? ''}}</p>

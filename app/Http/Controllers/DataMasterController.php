@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class DataMasterController extends Controller
 {
     public function index(){
-        return view('master-data.index');
+        $data['page_title'] = "Master Data";
+        return view('master-data.index',$data);
     }
 }

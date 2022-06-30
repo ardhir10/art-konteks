@@ -97,6 +97,8 @@ Route::middleware('auth')->group(function () {
 
     // --- RAPAT INTERNAL KABAGTU LANJUTKAN INTERNAL
     Route::post('/approval-survey/tindak-lanjut/kabagtu-lanjutkan-internal/{id}', 'ApprovalSurveyController@kabagTULanjutkan')->name('approval-survey.tindak-lanjut.kabagtu-lanjutkan-internal');
+    // --- RAPAT INTERNAL KABAGTU LANJUTKAN PEMOHON
+    Route::post('/approval-survey/tindak-lanjut/kabagtu-lanjutkan-pemohon/{id}', 'ApprovalSurveyController@kabagTULanjutkanPemohon')->name('approval-survey.tindak-lanjut.kabagtu-lanjutkan-pemohon');
 
     // --- RAPAT INTERNAL CREATE UNDANGAN STAFF TU
     Route::post('/approval-survey/tindak-lanjut/stafftu-create-undangan/{id}', 'ApprovalSurveyController@staffTuCreateUndangan')->name('approval-survey.tindak-lanjut.stafftu-create-undangan');
@@ -110,6 +112,10 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/tindak-lanjut/tindak-lanjut-izin-kantor-pusat/{id}', 'TindakLanjutController@izinPembangunanKantorPusat')->name('approval-survey.tindak-lanjut.pemohon-izin-pembangunan-kantor-pusat');
 
+
+
+    Route::get('/list-dokumen-rekom-pertek', 'DokumenRekomPertekController@index')->name('dokumen-rekom-pertek');
+    Route::get('/tindak-lanjut-dokumen', 'ApprovalSurveyController@tindakLanjutDokumen')->name('tindak-lanjut-dokumen');
 
     // --- MASTER DATA
     Route::prefix('master-data')->name('master-data.')->group(function () {

@@ -29,27 +29,195 @@ class ApprovalSurveyController extends Controller
     public function index(){
 
         $data['page_title'] = 'Approval dan Survey';
-        $PTPengerukan = PermohonanPTPengerukan::select('*')
+
+        if ((Auth::user()->role->name ?? '') == 'Pemohon') {
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+            $PTRTerminal = PermohonanPTTerminal::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+            $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+            $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
+
+
+            $result = collect($PTPengerukan)
+                ->merge($PTReklamasi)
+                ->merge($PTRTerminal)
+                ->merge($PTRPba)
+                ->merge($PTRPbp)
+                ->merge($RTPap)
+                ->merge($RTPpSbnp)
+                ->merge($RTPzp);
+        }else{
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+                ->get();
+
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+                ->get();
+
+            $PTRTerminal = PermohonanPTTerminal::select('*')
+                ->get();
+
+            $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
+                ->get();
+
+            $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
+                ->get();
+
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+                ->get();
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+                ->get();
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+                ->get();
+
+
+            $result = collect($PTPengerukan)
+                ->merge($PTReklamasi)
+                ->merge($PTRTerminal)
+                ->merge($PTRPba)
+                ->merge($PTRPbp)
+                ->merge($RTPap)
+                ->merge($RTPpSbnp)
+                ->merge($RTPzp);
+        }
+
+
+        $data['permohonan'] = $result;
+
+        return view('approval-survey.admin-index', $data);
+
+    }
+
+    public function tindakLanjutDokumen()
+    {
+
+        $data['page_title'] = 'Tindak Lanjut Dokumen';
+
+        if ((Auth::user()->role->name ?? '') == 'Pemohon') {
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
-        $PTReklamasi = PermohonanPTReklamasi::select('*')
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
-        $PTRTerminal = PermohonanPTTerminal::select('*')
+            $PTRTerminal = PermohonanPTTerminal::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
-        $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
+            $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
-        $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
+            $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
 
-        $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
-        $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
-        $RTPzp = PermohonanRTZonasiPerairan::select('*')
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+            ->where(function($q){
+                $q->where('status', 2)
+                ->orWhere('status',3);
+            })
+            ->where('pemohon_id', Auth::user()->id)
             ->get();
+        }else{
+            $PTPengerukan = PermohonanPTPengerukan::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+
+            $PTReklamasi = PermohonanPTReklamasi::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+
+            $PTRTerminal = PermohonanPTTerminal::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+
+            $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+
+            $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+
+            $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+            $RTPpSbnp = PermohonanRTPpSbnp::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+            $RTPzp = PermohonanRTZonasiPerairan::select('*')
+            ->where('status', 2)
+            ->orWhere('status', 3)
+            ->get();
+        }
+
 
 
         $result = collect($PTPengerukan)
@@ -64,7 +232,6 @@ class ApprovalSurveyController extends Controller
         $data['permohonan'] = $result;
 
         return view('approval-survey.admin-index', $data);
-
     }
 
     public function review(Request $request,$id){
@@ -148,6 +315,19 @@ class ApprovalSurveyController extends Controller
                 $dataApproval['notify_to_role'] = 'Kabag TU';
                 $dataApproval['status'] = 'DALAM PROSES';
                 $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+            } elseif ($tindakLanjut == 'Rapat Dengan Pemohon') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kabag TU';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 1;
                 $dataApproval['from_table'] = $request->permohonan_type;
                 $dataApproval['created_by_id'] = Auth::user()->id;
                 $dataApproval['updated_by_id'] = null;
@@ -636,6 +816,37 @@ class ApprovalSurveyController extends Controller
         }
     }
 
+    public function kabagTULanjutkanPemohon(Request $request, $id)
+    {
+        $modelPermohonan = $this->filterModel($request->permohonan_type);
+        try {
+            DB::beginTransaction();
+
+            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+            $dataApproval['permohonan_id'] = $id;
+            $dataApproval['keterangan'] = $request->keterangan;
+            $dataApproval['tindak_lanjut'] = 'Rapat Dengan Pemohon';
+            $dataApproval['type'] = 'APPROVAL';
+            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+            $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+            $dataApproval['status'] = 'DALAM PROSES';
+            $dataApproval['visible'] = 1;
+            $dataApproval['from_table'] = $request->permohonan_type;
+            $dataApproval['created_by_id'] = Auth::user()->id;
+            $dataApproval['updated_by_id'] = null;
+
+
+            ApprovalProcess::create($dataApproval);
+            $modelPermohonan::where('id', $id)
+            ->update(['status' => 1]);
+            DB::commit();
+            return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['failed' => $th->getMessage()]);
+            DB::rollBack();
+        }
+    }
+
 
     public function staffTuCreateUndangan(Request $request, $id)
     {
@@ -644,33 +855,65 @@ class ApprovalSurveyController extends Controller
         try {
             DB::beginTransaction();
 
-            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
-            $dataApproval['permohonan_id'] = $id;
-            $dataApproval['keterangan'] = $request->keterangan;
-            $dataApproval['tindak_lanjut'] = 'Rapat Internal';
-            $dataApproval['type'] = 'UNDANGAN RAPAT';
-            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
-            $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
-            $dataApproval['status'] = 'DALAM PROSES';
-            $dataApproval['visible'] = 0;
-            $dataApproval['from_table'] = $request->permohonan_type;
-            $dataApproval['created_by_id'] = Auth::user()->id;
-            $dataApproval['updated_by_id'] = null;
-            $approvalProcess = ApprovalProcess::create($dataApproval);
+            if ($request->rapat_for == 'pemohon') {
 
 
 
-            // -- DATA UNDANGAN RAPAT
-            $undanganRapat['tanggal_rapat'] = $request->tanggal_rapat;
-            $undanganRapat['perihal_rapat'] = $request->perihal_rapat;
-            $undanganRapat['jam_rapat'] = $request->jam_rapat;
-            $undanganRapat['durasi_rapat'] = $request->durasi_rapat;
-            $undanganRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
-            $undanganRapat['approval_process_id'] = $approvalProcess->id;
-            $undanganRapat['permohonan_id'] = $id;
-            $undanganRapat['from_table'] = $request->permohonan_type;
-            $undanganRapat['keterangan'] = $request->keterangan;
-            $undanganRapat['created_by_id'] = Auth::user()->id;
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = 'Rapat Dengan Pemohon';
+                $dataApproval['type'] = 'UNDANGAN RAPAT';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 1;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
+
+                // -- DATA UNDANGAN RAPAT
+                $undanganRapat['tanggal_rapat'] = $request->tanggal_rapat;
+                $undanganRapat['perihal_rapat'] = $request->perihal_rapat;
+                $undanganRapat['jam_rapat'] = $request->jam_rapat;
+                $undanganRapat['durasi_rapat'] = $request->durasi_rapat;
+                $undanganRapat['type'] = 'UNDANGAN RAPAT PEMOHON';
+                $undanganRapat['approval_process_id'] = $approvalProcess->id;
+                $undanganRapat['permohonan_id'] = $id;
+                $undanganRapat['from_table'] = $request->permohonan_type;
+                $undanganRapat['keterangan'] = $request->keterangan;
+                $undanganRapat['created_by_id'] = Auth::user()->id;
+            }else{
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = 'Rapat Internal';
+                $dataApproval['type'] = 'UNDANGAN RAPAT';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Staff Tata Usaha';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
+
+
+
+                // -- DATA UNDANGAN RAPAT
+                $undanganRapat['tanggal_rapat'] = $request->tanggal_rapat;
+                $undanganRapat['perihal_rapat'] = $request->perihal_rapat;
+                $undanganRapat['jam_rapat'] = $request->jam_rapat;
+                $undanganRapat['durasi_rapat'] = $request->durasi_rapat;
+                $undanganRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
+                $undanganRapat['approval_process_id'] = $approvalProcess->id;
+                $undanganRapat['permohonan_id'] = $id;
+                $undanganRapat['from_table'] = $request->permohonan_type;
+                $undanganRapat['keterangan'] = $request->keterangan;
+                $undanganRapat['created_by_id'] = Auth::user()->id;
+            }
+
 
             if ($request->file_udangan_rapat) {
 
@@ -704,36 +947,72 @@ class ApprovalSurveyController extends Controller
         try {
             DB::beginTransaction();
 
-            $dataApproval['timestamp'] = date('Y-m-d H:i:s');
-            $dataApproval['permohonan_id'] = $id;
-            $dataApproval['keterangan'] = $request->keterangan;
-            $dataApproval['tindak_lanjut'] = 'Rapat Internal';
-            $dataApproval['type'] = 'LAPORAN RAPAT';
-            $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
-            $dataApproval['notify_to_role'] = 'Kadisnav';
-            $dataApproval['status'] = 'DALAM PROSES';
-            $dataApproval['visible'] = 0;
-            $dataApproval['from_table'] = $request->permohonan_type;
-            $dataApproval['created_by_id'] = Auth::user()->id;
-            $dataApproval['updated_by_id'] = null;
-            $approvalProcess = ApprovalProcess::create($dataApproval);
+            if ($request->rapat_for == 'pemohon') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = 'Rapat Dengan Pemohon';
+                $dataApproval['type'] = 'LAPORAN RAPAT';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kadisnav';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 1;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
 
 
 
-            // -- DATA LAPORAN RAPAT
-            //  $modelPermohonan::where('id', $id)
-            // dd($modelPermohonan::wherefirst());
+                // -- DATA LAPORAN RAPAT
+                //  $modelPermohonan::where('id', $id)
+                // dd($modelPermohonan::wherefirst());
 
-            $laporanRapat['ringkasan_rapat'] = $request->ringkasan_rapat;
-            $laporanRapat['original_file_name'] = $request->original_file_name;
-            $laporanRapat['file_name'] = $request->file_name;
-            $laporanRapat['undangan_rapat_id'] = null;
-            $laporanRapat['approval_process_id'] = $approvalProcess->id;
-            $laporanRapat['permohonan_id'] = $id;
-            $laporanRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
-            $laporanRapat['from_table'] = $request->permohonan_type;
-            $laporanRapat['keterangan'] = $request->keterangan;
-            $laporanRapat['created_by_id'] = Auth::user()->id;
+                $laporanRapat['ringkasan_rapat'] = $request->ringkasan_rapat;
+                $laporanRapat['original_file_name'] = $request->original_file_name;
+                $laporanRapat['file_name'] = $request->file_name;
+                $laporanRapat['undangan_rapat_id'] = null;
+                $laporanRapat['approval_process_id'] = $approvalProcess->id;
+                $laporanRapat['permohonan_id'] = $id;
+                $laporanRapat['type'] = 'UNDANGAN DENGAN PEMOHON';
+                $laporanRapat['from_table'] = $request->permohonan_type;
+                $laporanRapat['keterangan'] = $request->keterangan;
+                $laporanRapat['created_by_id'] = Auth::user()->id;
+            }else{
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = 'Rapat Internal';
+                $dataApproval['type'] = 'LAPORAN RAPAT';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = 'Kadisnav';
+                $dataApproval['status'] = 'DALAM PROSES';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
+                $approvalProcess = ApprovalProcess::create($dataApproval);
+
+
+
+                // -- DATA LAPORAN RAPAT
+                //  $modelPermohonan::where('id', $id)
+                // dd($modelPermohonan::wherefirst());
+
+                $laporanRapat['ringkasan_rapat'] = $request->ringkasan_rapat;
+                $laporanRapat['original_file_name'] = $request->original_file_name;
+                $laporanRapat['file_name'] = $request->file_name;
+                $laporanRapat['undangan_rapat_id'] = null;
+                $laporanRapat['approval_process_id'] = $approvalProcess->id;
+                $laporanRapat['permohonan_id'] = $id;
+                $laporanRapat['type'] = 'UNDANGAN RAPAT INTERNAL';
+                $laporanRapat['from_table'] = $request->permohonan_type;
+                $laporanRapat['keterangan'] = $request->keterangan;
+                $laporanRapat['created_by_id'] = Auth::user()->id;
+
+            }
+
+
 
 
 

@@ -35,22 +35,22 @@ class PermohonanController extends Controller
                 ->get();
 
             $PTRPba = PermohonanPTPekerjaanBawahAir::select('*')
-            ->where('pemohon_id', Auth::user()->id)
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
 
             $PTRPbp = PermohonanPTPembangunanBangunanPerairan::select('*')
-            ->where('pemohon_id', Auth::user()->id)
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
 
             $RTPap = PermohonanRTPenyelenggaraAlurPelayaran::select('*')
-            ->where('pemohon_id', Auth::user()->id)
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
             $RTPpSbnp = PermohonanRTPpSbnp::select('*')
-            ->where('pemohon_id', Auth::user()->id)
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
             $RTPzp = PermohonanRTZonasiPerairan::select('*')
-            ->where('pemohon_id', Auth::user()->id)
-            ->get();
+                ->where('pemohon_id', Auth::user()->id)
+                ->get();
 
 
             $result = collect($PTPengerukan)
@@ -60,8 +60,7 @@ class PermohonanController extends Controller
                 ->merge($PTRPbp)
                 ->merge($RTPap)
                 ->merge($RTPpSbnp)
-                ->merge($RTPzp)
-                ;
+                ->merge($RTPzp);
             $data['permohonan'] = $result;
             return view('permohonan.pemohon-index', $data);
         }else{
