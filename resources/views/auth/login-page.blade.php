@@ -11,7 +11,8 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('images/icon/konteks-logo-dark.png')}}">
+    <link rel="shortcut icon" href="{{asset('favicon.png')}}">
+
 
     <!-- Bootstrap Css -->
     <link href="{{asset('/assets')}}/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />

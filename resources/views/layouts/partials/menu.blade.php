@@ -24,7 +24,7 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
 
-                @if (Auth::user()->role->name == 'Admin Konteks')
+                @if (Auth::user()->role->name == 'Admin KONTEKS')
 
                     <li>
                         <a href="{{route('dashboard')}}">
@@ -67,7 +67,7 @@
 
                     <li class="menu-title" data-key="t-dashboards">LAPORAN & MASTER DATA</li>
                     <li>
-                        <a href="{{route('user.setting')}}">
+                        <a href="/">
                             <i class="icon nav-icon" data-feather="clipboard"></i>
                             <span class="menu-item" data-key="t-sales">Laporan</span>
                         </a>

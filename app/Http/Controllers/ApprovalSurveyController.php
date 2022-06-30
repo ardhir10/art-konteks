@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\DB;
 
 class ApprovalSurveyController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
 
         $data['page_title'] = 'Approval dan Survey';
 
@@ -62,14 +62,28 @@ class ApprovalSurveyController extends Controller
                 ->get();
 
 
-            $result = collect($PTPengerukan)
-                ->merge($PTReklamasi)
-                ->merge($PTRTerminal)
-                ->merge($PTRPba)
-                ->merge($PTRPbp)
-                ->merge($RTPap)
-                ->merge($RTPpSbnp)
-                ->merge($RTPzp);
+            // --- FILTER TYPE
+            if ($request->type == 'Rekomendasi Teknis') {
+                $result = collect($RTPap)
+                    ->merge($RTPpSbnp)
+                    ->merge($RTPzp);
+            }elseif($request->type == 'Pertimbangan Teknis'){
+                $result = collect($PTPengerukan)
+                    ->merge($PTReklamasi)
+                    ->merge($PTRTerminal)
+                    ->merge($PTRPba)
+                    ->merge($PTRPbp);
+            }else{
+                $result = collect($PTPengerukan)
+                    ->merge($PTReklamasi)
+                    ->merge($PTRTerminal)
+                    ->merge($PTRPba)
+                    ->merge($PTRPbp)
+                    ->merge($RTPap)
+                    ->merge($RTPpSbnp)
+                    ->merge($RTPzp);
+            }
+
         }else{
             $PTPengerukan = PermohonanPTPengerukan::select('*')
                 ->get();
@@ -93,15 +107,27 @@ class ApprovalSurveyController extends Controller
             $RTPzp = PermohonanRTZonasiPerairan::select('*')
                 ->get();
 
-
-            $result = collect($PTPengerukan)
-                ->merge($PTReklamasi)
-                ->merge($PTRTerminal)
-                ->merge($PTRPba)
-                ->merge($PTRPbp)
-                ->merge($RTPap)
-                ->merge($RTPpSbnp)
-                ->merge($RTPzp);
+                // --- FILTER TYPE
+            if ($request->jenis == 'Rekomendasi Teknis') {
+                $result = collect($RTPap)
+                    ->merge($RTPpSbnp)
+                    ->merge($RTPzp);
+            } elseif ($request->jenis == 'Pertimbangan Teknis') {
+                $result = collect($PTPengerukan)
+                    ->merge($PTReklamasi)
+                    ->merge($PTRTerminal)
+                    ->merge($PTRPba)
+                    ->merge($PTRPbp);
+            } else {
+                $result = collect($PTPengerukan)
+                    ->merge($PTReklamasi)
+                    ->merge($PTRTerminal)
+                    ->merge($PTRPba)
+                    ->merge($PTRPbp)
+                    ->merge($RTPap)
+                    ->merge($RTPpSbnp)
+                    ->merge($RTPzp);
+            }
         }
 
 

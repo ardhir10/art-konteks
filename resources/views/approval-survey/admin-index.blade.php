@@ -51,111 +51,116 @@
                 <div class="col-12">
                     <hr>
                     @include('components.flash-message')
-                    <div class="row mb-3">
-                         <div class="col-lg-12 mb-3">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">Bulan</label>
-                                        <select name="" id="" class="form-select">
-                                            <option value="">Januari</option>
-                                            <option value="">Februari</option>
-                                            <option value="">Maret</option>
-                                            <option value="">April</option>
-                                            <option value="">Mei</option>
-                                            <option value="">Juni</option>
-                                            <option value="">Juli</option>
-                                            <option value="">Agustus</option>
-                                            <option value="">September</option>
-                                            <option value="">Oktober</option>
-                                            <option value="">November</option>
-                                            <option value="">Desember</option>
-                                        </select>
+                    <form action="">
+                        <div class="row mb-3">
+                            <div class="col-lg-12 mb-3">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Bulan</label>
+                                            <select name="bulan" id="" class="form-select">
+                                                <option value="01">Januari</option>
+                                                <option value="02">Februari</option>
+                                                <option value="03">Maret</option>
+                                                <option value="04">April</option>
+                                                <option value="05">Mei</option>
+                                                <option value="06">Juni</option>
+                                                <option value="07">Juli</option>
+                                                <option value="08">Agustus</option>
+                                                <option value="09">September</option>
+                                                <option value="10">Oktober</option>
+                                                <option value="11">November</option>
+                                                <option value="12">Desember</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <label for="">Tahun</label>
-                                        <select name="" id="" class="form-select">
-                                            <option value="">2022</option>
-                                        </select>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label for="">Tahun</label>
+                                            <select name="tahun" id="" class="form-select">
+                                                <option value="2022">2022</option>
+                                                <option value="2021">2021</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <label for="">Jenis Permohonan</label>
-                                        <select name="" id="" class="form-select">
-                                            <option value="">Pertimbangan Teknis</option>
-                                            <option value="">Rekomendasi Teknis</option>
-                                        </select>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="">Jenis Permohonan</label>
+                                            <select name="jenis" id="" class="form-select">
+                                                <option value="">Semua</option>
+                                                <option value="Pertimbangan Teknis">Pertimbangan Teknis</option>
+                                                <option value="Rekomendasi Teknis">Rekomendasi Teknis</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <label for="">Status</label>
-                                        <select name="" id="" class="form-select">
-                                            <option value="">Dalam Proses</option>
-                                            <option value="">Disetujui</option>
-                                            <option value="">Ditolak</option>
-                                            <option value="">Selesai</option>
-                                        </select>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label for="">Status</label>
+                                            <select name="status" id="" class="form-select">
+                                                <option value="">Semua</option>
+                                                <option value="1">Dalam Proses</option>
+                                                <option value="2">Disetujui</option>
+                                                <option value="4">Ditolak</option>
+                                                <option value="3">Selesai</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-1">
-                                    <div class="form-group">
-                                        <label for="">Filter</label>
-                                        <button class="btn btn-primary w-100">FILTER</button>
+                                    <div class="col-lg-1">
+                                        <div class="form-group">
+                                            <label for="">Filter</label>
+                                            <button class="btn btn-primary w-100">FILTER</button>
 
+                                        </div>
                                     </div>
+
                                 </div>
 
                             </div>
+                            <div class="col-lg-12">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex pb-1 ps-0">
+                                                <div class="avatar-sm me-1">
+                                                    <div class="avatar-title bg-warning rounded-circle ">
+                                                    </div>
+                                                </div>
+                                                <span class="mt-1 ">Dalam Proses</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex pb-1 ps-4">
+                                                <div class="avatar-sm me-1">
+                                                    <div class="avatar-title bg-success rounded-circle ">
+                                                    </div>
+                                                </div>
+                                                <span class="mt-1 ">Dokumen Terbit</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex pb-1 ps-4">
+                                                <div class="avatar-sm me-1">
+                                                    <div class="avatar-title bg-danger rounded-circle ">
+                                                    </div>
+                                                </div>
+                                                <span class="mt-1 ">Ditolak</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex pb-1 ps-4">
+                                                <div class="avatar-sm me-1">
+                                                    <div class="avatar-title bg-dark rounded-circle ">
+                                                    </div>
+                                                </div>
+                                                <span class="mt-1 ">Selesai Tindak Lanjut</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
                         </div>
-                        <div class="col-lg-12">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-0">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-warning rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Dalam Proses</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-success rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Dokumen Terbit</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-danger rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Ditolak</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex pb-1 ps-4">
-                                            <div class="avatar-sm me-1">
-                                                <div class="avatar-title bg-dark rounded-circle ">
-                                                </div>
-                                            </div>
-                                            <span class="mt-1 ">Selesai Tindak Lanjut</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                    </div>
+                    </form>
                 </div>
                 <table class="table-striped datatables" id="data-table" style="font-size: 16px">
                     <thead>
