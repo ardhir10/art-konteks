@@ -25,7 +25,6 @@
                         </div>
                     </div>
                     @if ($data->prosesPermohonan->where('status','DOKUMEN TERBIT')->first())
-
                         <div class="swiper-slide" style="">
                             <div class="event-list text-start">
                                 <h5 class="font-size-14 mb-1 fw-bold mt-3">Dokumen Terbit</h5>
@@ -36,8 +35,18 @@
                                 </p>
                             </div>
                         </div>
+                    @elseif($data->prosesPermohonan->where('tindak_lanjut','Ditolak')->first())
+                        <div class="swiper-slide" style="">
+                            <div class="event-list-reject text-start">
+                                <h5 class="font-size-14 mb-1 fw-bold mt-3">Ditolak</h5>
+                                <p class="text-muted">
+                                        {{date('d F T',strtotime($data->prosesPermohonan->where('tindak_lanjut','Ditolak')->first()->created_at))}} ||
+                                        {{date('H:i:s',strtotime($data->prosesPermohonan->where('tindak_lanjut','Ditolak')->first()->created_at))}}
+                                    {{-- {{$apv->role_to_name}} --}}
+                                </p>
+                            </div>
+                        </div>
                     @else
-
                         <div class="swiper-slide" style="">
                             <div class="event-list-pending text-start">
                                 <h5 class="font-size-14 mb-1 fw-bold mt-3">Dalam Proses Approval</h5>

@@ -92,6 +92,8 @@
                                             <p class="text-success fs-4">DOKUMEN TERBIT</p>
                                         @elseif ($data->status == 3)
                                             <p class="text-dark fs-4">SELESAI</p>
+                                        @elseif ($data->status == 4)
+                                            <p class="text-danger fs-4">DITOLAK</p>
                                         @else
                                             <p class="text-warning fs-4">DALAM PROSES</p>
                                         @endif
@@ -210,7 +212,6 @@
 <script src="{{asset('assets/libs/swiper/swiper-bundle.min.js')}}"></script>
 <!-- timeline init -->
 <script src="{{asset('assets/js/pages/timeline.init.js')}}"></script>
-
 <script>
     $('#data-table').DataTable({
         //   "pageLength": 3

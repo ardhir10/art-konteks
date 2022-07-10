@@ -230,6 +230,11 @@
                                             <div class="avatar-title bg-dark rounded-circle ">
                                             </div>
                                         </div>
+                                    @elseif($item->status == 4)
+                                        <div class="avatar-sm me-1">
+                                            <div class="avatar-title bg-danger rounded-circle ">
+                                            </div>
+                                        </div>
                                     @else
                                         <div class="avatar-sm me-1">
                                             <div class="avatar-title bg-warning rounded-circle ">

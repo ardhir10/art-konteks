@@ -357,11 +357,29 @@ class ApprovalSurveyController extends Controller
                 $dataApproval['from_table'] = $request->permohonan_type;
                 $dataApproval['created_by_id'] = Auth::user()->id;
                 $dataApproval['updated_by_id'] = null;
+            } elseif ($tindakLanjut == 'Ditolak') {
+                $dataApproval['timestamp'] = date('Y-m-d H:i:s');
+                $dataApproval['permohonan_id'] = $id;
+                $dataApproval['keterangan'] = $request->keterangan;
+                $dataApproval['tindak_lanjut'] = $tindakLanjut;
+                $dataApproval['type'] = 'APPROVAL';
+                $dataApproval['notify_from_role'] = Auth::user()->role->name ?? '';
+                $dataApproval['notify_to_role'] = '';
+                $dataApproval['status'] = 'DITOLAK';
+                $dataApproval['visible'] = 0;
+                $dataApproval['from_table'] = $request->permohonan_type;
+                $dataApproval['created_by_id'] = Auth::user()->id;
+                $dataApproval['updated_by_id'] = null;
             }
 
             ApprovalProcess::create($dataApproval);
-            $modelPermohonan::where('id',$id)
+            if($tindakLanjut == 'Ditolak'){
+                $modelPermohonan::where('id', $id)
+                    ->update(['status' => 4]);
+            }else{
+                $modelPermohonan::where('id',$id)
                 ->update(['status'=>1]);
+            }
             DB::commit();
             return redirect()->back()->with(['success' => 'Data berhasil ditindak lanjut !']);
         } catch (\Throwable $th) {
