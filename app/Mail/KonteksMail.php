@@ -38,7 +38,7 @@ class KonteksMail extends Mailable
     public function build()
     {
         if($this->type == 'penolakan'){
-            return $this->from('no-reply@konteks.com')
+            return $this->from('konteks@disnavpriok.id')
             ->subject('Permohonan Registrasi Aplikasi Konteks')
             ->view('email-template.permohonan-registrasi-tolak')
             ->with(
@@ -47,7 +47,7 @@ class KonteksMail extends Mailable
                 ]
             );
         }else{
-            return $this->from('no-reply@konteks.com')
+            return $this->from('konteks@disnavpriok.id')
             ->subject('Permohonan Registrasi Aplikasi Konteks')
             ->view('email-template.permohonan-registrasi-terima')
             ->with(

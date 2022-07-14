@@ -55,7 +55,7 @@ class RegistrasiPemohonController extends Controller
         // --- HANDLE PROCESS
         $dataUserPemohon = User::where('id', $id)->first();
         try {
-            // Mail::to($dataUserPemohon->email)->send(new KonteksMail(['username' => $request->username ,'password'=>$request->password, 'type' => 'terima']));
+            Mail::to($dataUserPemohon->email)->send(new KonteksMail(['username' => $request->username ,'password'=>$request->password, 'type' => 'terima']));
             $dataUserPemohon = User::where('id', $id)
                 ->update([
                     'status_approve' => 1,
